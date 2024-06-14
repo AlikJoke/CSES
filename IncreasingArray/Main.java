@@ -31,7 +31,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         final int[] sourceArray = readArray();
+        final long summaryIncreasingCount = computeSummaryIncreasingStepsCount(sourceArray);
 
+        System.out.print(summaryIncreasingCount);
+    }
+
+    private static long computeSummaryIncreasingStepsCount(final int[] sourceArray) {
         long summaryIncreasingCount = 0;
         int prevNumber = sourceArray[0];
         for (int i = 1; i < sourceArray.length; i++) {
@@ -44,7 +49,7 @@ public class Main {
             }
         }
 
-        System.out.print(summaryIncreasingCount);
+        return summaryIncreasingCount;
     }
 
     private static int[] readArray() throws Exception {

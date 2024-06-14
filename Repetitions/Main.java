@@ -25,31 +25,34 @@ public class Main {
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             final String dnaSequence = scanner.nextLine();
+            final int maxSequenceLengthOfAnyNucleotide = computeMaxSequenceLengthOfAnyNucleotide(dnaSequence);
+            System.out.print(maxSequenceLengthOfAnyNucleotide);
+        }
+    }
 
-            final int[] currentSeqLength = new int[4];
-            final int[] maxSeqLength = new int[4];
+    private static int computeMaxSequenceLengthOfAnyNucleotide(final String dnaSequence) {
 
-            final char[] nucleotides = dnaSequence.toCharArray();
-            for (char currentNucleotide : nucleotides) {
-                final int currentNucleotideIdx = getNucleotideIdx(currentNucleotide);
-                final int currentNucleotideSeqLength = currentSeqLength[currentNucleotideIdx] = ++currentSeqLength[currentNucleotideIdx];
-                maxSeqLength[currentNucleotideIdx] = Math.max(maxSeqLength[currentNucleotideIdx], currentNucleotideSeqLength);
+        final int[] currentSeqLength = new int[4];
+        final int[] maxSeqLength = new int[4];
 
-                for (int i = 0; i < currentSeqLength.length; i++) {
-                    if (currentNucleotideIdx != i) {
-                        currentSeqLength[i] = 0;
-                    }
+        final char[] nucleotides = dnaSequence.toCharArray();
+        for (char currentNucleotide : nucleotides) {
+            final int currentNucleotideIdx = getNucleotideIdx(currentNucleotide);
+            final int currentNucleotideSeqLength = currentSeqLength[currentNucleotideIdx] = ++currentSeqLength[currentNucleotideIdx];
+            maxSeqLength[currentNucleotideIdx] = Math.max(maxSeqLength[currentNucleotideIdx], currentNucleotideSeqLength);
+
+            for (int i = 0; i < currentSeqLength.length; i++) {
+                if (currentNucleotideIdx != i) {
+                    currentSeqLength[i] = 0;
                 }
             }
-
-            final int maxNucleotideSequence =
-                    Math.max(maxSeqLength[0],
-                             Math.max(maxSeqLength[1],
-                                      Math.max(maxSeqLength[2], maxSeqLength[3])
-                             )
-                    );
-            System.out.print(maxNucleotideSequence);
         }
+
+        return Math.max(maxSeqLength[0],
+                Math.max(maxSeqLength[1],
+                        Math.max(maxSeqLength[2], maxSeqLength[3])
+                )
+        );
     }
 
     private static int getNucleotideIdx(final char nucleotide) {

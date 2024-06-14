@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 /**
  * <h1>Two Sets</h1><br/>
- *  task is to divide the numbers {@literal 1,2,...,n} into two sets of equal sum.<br/><br/>
+ * Task is to divide the numbers {@literal 1,2,...,n} into two sets of equal sum.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
  * The only input line contains an integer {@literal n}.<br/>
@@ -43,34 +43,37 @@ public class Main {
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             final int n = scanner.nextInt();
-
-            final long seriesSum = (long) n * (n + 1) / 2;
-            if (seriesSum % 2 == 1) {
-                System.out.print(NO_ANSWER);
-                return;
-            }
-
-            final int[] firstSet = new int[n];
-            final int[] secondSet = new int[n];
-
-            for (int i = 0; i < n; i++) {
-                secondSet[i] = i + 1;
-            }
-
-            long requiredSumOfNumbersInOneSet = seriesSum / 2;
-            int firstSetSize = 0;
-            for (int i = 0; i < n && requiredSumOfNumbersInOneSet > 0; i++, firstSetSize++) {
-                final int currentNumber = (int) Math.min(requiredSumOfNumbersInOneSet, n - i);
-
-                firstSet[i] = currentNumber;
-                secondSet[currentNumber - 1] = 0;
-
-                requiredSumOfNumbersInOneSet = requiredSumOfNumbersInOneSet - currentNumber;
-            }
-
-            final String result = createOutputString(firstSet, secondSet, firstSetSize);
+            final String result = computeSetsInStringRepresentation(n);
             System.out.println(result);
         }
+    }
+
+    private static String computeSetsInStringRepresentation(final int n) {
+
+        final long seriesSum = (long) n * (n + 1) / 2;
+        if (seriesSum % 2 == 1) {
+            return NO_ANSWER;
+        }
+
+        final int[] firstSet = new int[n];
+        final int[] secondSet = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            secondSet[i] = i + 1;
+        }
+
+        long requiredSumOfNumbersInOneSet = seriesSum / 2;
+        int firstSetSize = 0;
+        for (int i = 0; i < n && requiredSumOfNumbersInOneSet > 0; i++, firstSetSize++) {
+            final int currentNumber = (int) Math.min(requiredSumOfNumbersInOneSet, n - i);
+
+            firstSet[i] = currentNumber;
+            secondSet[currentNumber - 1] = 0;
+
+            requiredSumOfNumbersInOneSet = requiredSumOfNumbersInOneSet - currentNumber;
+        }
+
+        return createOutputString(firstSet, secondSet, firstSetSize);
     }
 
     private static String createOutputString(final int[] firstSet, final int[] secondSet, final int firstSetSize) {

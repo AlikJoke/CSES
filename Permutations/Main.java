@@ -38,13 +38,17 @@ public class Main {
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             final int sequenceLength = scanner.nextInt();
-            final int[] sequence = new int[sequenceLength];
+            final String outputSequence = computeBeautifulSequenceString(sequenceLength);
 
-            fillSequence(sequence);
-
-            final String outputSequence = composeOutputSequenceString(sequence);
             System.out.print(outputSequence);
         }
+    }
+
+    private static String computeBeautifulSequenceString(final int sequenceLength) {
+        final int[] sequence = new int[sequenceLength];
+        fillSequence(sequence);
+
+        return composeOutputSequenceString(sequence);
     }
 
     private static String composeOutputSequenceString(final int[] sequence) {

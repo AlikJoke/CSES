@@ -26,19 +26,25 @@ public class Main {
 
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
-            long n = scanner.nextInt();
+            final long n = scanner.nextInt();
+            final String sequenceString = computeSequenceNumberString(n);
 
-            final StringBuilder sb = new StringBuilder(1024);
-            sb.append(n).append(' ');
-
-            while (n != 1) {
-                n = computeNext(n);
-
-                sb.append(n).append(' ');
-            }
-
-            System.out.println(sb);
+            System.out.println(sequenceString);
         }
+    }
+
+    private static String computeSequenceNumberString(final long n) {
+        final StringBuilder sb = new StringBuilder(1024);
+        sb.append(n).append(' ');
+
+        long currentNumber = n;
+        while (currentNumber != 1) {
+            currentNumber = computeNext(currentNumber);
+
+            sb.append(currentNumber).append(' ');
+        }
+
+        return sb.toString();
     }
 
     private static long computeNext(final long n) {
