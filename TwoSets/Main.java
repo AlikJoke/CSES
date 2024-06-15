@@ -44,7 +44,7 @@ public class Main {
         try (Scanner scanner = new Scanner(System.in)) {
             final int n = scanner.nextInt();
             final String result = computeSetsInStringRepresentation(n);
-            System.out.println(result);
+            System.out.println(result == null ? NO_ANSWER : result);
         }
     }
 
@@ -52,7 +52,7 @@ public class Main {
 
         final long seriesSum = (long) n * (n + 1) / 2;
         if (seriesSum % 2 == 1) {
-            return NO_ANSWER;
+            return null;
         }
 
         final int[] firstSet = new int[n];
