@@ -26,9 +26,13 @@ public class Main {
 
     public static void main(String[] args) {
         final long n = readInputNumber();
-        final String sequenceString = computeSequenceNumberString(n);
 
-        System.out.println(sequenceString);
+        final StringBuilder acc = new StringBuilder(1024);
+
+        final WeirdAlgorithm algorithm = new WeirdAlgorithm(n);
+        algorithm.fillSequenceOfNextNumbers(acc);
+
+        System.out.println(acc);
     }
 
     private static int readInputNumber() {
@@ -37,21 +41,28 @@ public class Main {
         }
     }
 
-    private static String computeSequenceNumberString(final long n) {
-        final StringBuilder sb = new StringBuilder(1024);
-        sb.append(n).append(' ');
+    private static class WeirdAlgorithm {
 
-        long currentNumber = n;
-        while (currentNumber != 1) {
-            currentNumber = computeNext(currentNumber);
+        private final long n;
 
-            sb.append(currentNumber).append(' ');
+        WeirdAlgorithm(long n) {
+            this.n = n;
         }
 
-        return sb.toString();
-    }
+        void fillSequenceOfNextNumbers(final StringBuilder acc) {
+            long currentNumber = this.n;
 
-    private static long computeNext(final long n) {
-        return n % 2 == 0 ? n >> 1 : n * 3 + 1;
+            acc.append(currentNumber).append(' ');
+
+            while (currentNumber != 1) {
+                currentNumber = computeNext(currentNumber);
+
+                acc.append(currentNumber).append(' ');
+            }
+        }
+
+        long computeNext(final long n) {
+            return n % 2 == 0 ? n >> 1 : n * 3 + 1;
+        }
     }
 }

@@ -30,59 +30,11 @@ public class Main {
 
     public static void main(String[] args) {
         final int[] numbers = readNumbers();
-        final int distinctNumbersCount = computeDistinctNumbersCount(numbers);
+
+        final DistinctNumbers algorithm = new DistinctNumbers(numbers);
+        final int distinctNumbersCount = algorithm.computeDistinctNumbersCount();
+
         System.out.println(distinctNumbersCount);
-    }
-
-    private static int computeDistinctNumbersCount(final int[] numbers) {
-        int distinctNumbersCount = 0;
-
-        quickSort(numbers, 0, numbers.length - 1);
-
-        int prevNumber = 0;
-        for (int number : numbers) {
-            if (number != prevNumber) {
-                distinctNumbersCount++;
-                prevNumber = number;
-            }
-        }
-
-        return distinctNumbersCount;
-    }
-
-    private static void quickSort(final int[] a, final int leftBound, final int rightBound) {
-        final int median = a[leftBound + (rightBound - leftBound) / 2];
-
-        int i = leftBound;
-        int j = rightBound;
-
-        while (i <= j) {
-
-            while (a[i] < median) {
-                i++;
-            }
-
-            while (a[j] > median) {
-                j--;
-            }
-
-            if (i <= j) {
-                final int t = a[i];
-                a[i] = a[j];
-                a[j] = t;
-
-                i++;
-                j--;
-            }
-        }
-
-        if (j > leftBound) {
-            quickSort(a, leftBound, j);
-        }
-
-        if (i < rightBound) {
-            quickSort(a, i, rightBound);
-        }
     }
 
     private static int[] readNumbers() {
@@ -95,6 +47,66 @@ public class Main {
             }
 
             return numbers;
+        }
+    }
+
+    private static class DistinctNumbers {
+
+        private final int[] numbersSequence;
+
+        DistinctNumbers(final int[] numbersSequence) {
+            this.numbersSequence = numbersSequence;
+        }
+
+        int computeDistinctNumbersCount() {
+            int distinctNumbersCount = 0;
+
+            quickSort(this.numbersSequence, 0, this.numbersSequence.length - 1);
+
+            int prevNumber = 0;
+            for (int number : this.numbersSequence) {
+                if (number != prevNumber) {
+                    distinctNumbersCount++;
+                    prevNumber = number;
+                }
+            }
+
+            return distinctNumbersCount;
+        }
+
+        private void quickSort(final int[] a, final int leftBound, final int rightBound) {
+            final int median = a[leftBound + ((rightBound - leftBound) >> 1)];
+
+            int i = leftBound;
+            int j = rightBound;
+
+            while (i <= j) {
+
+                while (a[i] < median) {
+                    i++;
+                }
+
+                while (a[j] > median) {
+                    j--;
+                }
+
+                if (i <= j) {
+                    final int t = a[i];
+                    a[i] = a[j];
+                    a[j] = t;
+
+                    i++;
+                    j--;
+                }
+            }
+
+            if (j > leftBound) {
+                quickSort(a, leftBound, j);
+            }
+
+            if (i < rightBound) {
+                quickSort(a, i, rightBound);
+            }
         }
     }
 }

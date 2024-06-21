@@ -45,38 +45,22 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         final int[][] allCoinPiles = readAllCoinPiles();
-        final String result = computeResult(allCoinPiles);
 
-        System.out.println(result);
+        final CoinPiles algorithm = new CoinPiles(allCoinPiles);
+        final boolean[] results = algorithm.compute();
+
+        final String outputResult = createOutputResultString(results);
+        System.out.println(outputResult);
     }
 
-    private static String computeResult(final int[][] allCoinPiles) {
-        final StringBuilder sb = new StringBuilder(allCoinPiles.length * 4);
+    private static String createOutputResultString(final boolean[] testsResults) {
+        final StringBuilder sb = new StringBuilder(testsResults.length * 4);
 
-        for (final int[] pairCoinPiles : allCoinPiles) {
-            final boolean canMakeEmptyBothPilesBySteps = canMakeEmptyBothPilesBySteps(pairCoinPiles);
-
-            sb.append(canMakeEmptyBothPilesBySteps ? YES_ANSWER : NO_ANSWER).append(System.lineSeparator());
+        for (final boolean testResult : testsResults) {
+            sb.append(testResult ? YES_ANSWER : NO_ANSWER).append(System.lineSeparator());
         }
 
         return sb.toString();
-    }
-
-    private static boolean canMakeEmptyBothPilesBySteps(final int[] coinPiles) {
-        final int firstPileSize = coinPiles[0];
-        final int secondPileSize = coinPiles[1];
-
-        final boolean isBothPilesEmpty = firstPileSize + secondPileSize == 0;
-        if (isBothPilesEmpty) {
-            return true;
-        }
-
-        final int maxCoinPile = Math.max(firstPileSize, secondPileSize);
-        final int minCoinPile = Math.min(firstPileSize, secondPileSize);
-
-        return firstPileSize > 0 && secondPileSize > 0
-                && (firstPileSize + secondPileSize) % 3 == 0
-                && (double) maxCoinPile / minCoinPile <= 2;
     }
 
     private static int[][] readAllCoinPiles() throws Exception {
@@ -90,6 +74,45 @@ public class Main {
             }
 
             return result;
+        }
+    }
+
+    private static class CoinPiles {
+
+        private final int[][] allCoinPiles;
+
+        CoinPiles(final int[][] allCoinPiles) {
+            this.allCoinPiles = allCoinPiles;
+        }
+
+        boolean[] compute() {
+
+            final boolean[] result = new boolean[this.allCoinPiles.length];
+            for (int i = 0; i < allCoinPiles.length; i++) {
+                final int[] pairCoinPiles = this.allCoinPiles[i];
+                final boolean canMakeEmptyBothPilesBySteps = canMakeEmptyBothPilesBySteps(pairCoinPiles);
+
+                result[i] = canMakeEmptyBothPilesBySteps;
+            }
+
+            return result;
+        }
+
+        private boolean canMakeEmptyBothPilesBySteps(final int[] coinPiles) {
+            final int firstPileSize = coinPiles[0];
+            final int secondPileSize = coinPiles[1];
+
+            final boolean isBothPilesEmpty = firstPileSize + secondPileSize == 0;
+            if (isBothPilesEmpty) {
+                return true;
+            }
+
+            final int maxCoinPile = Math.max(firstPileSize, secondPileSize);
+            final int minCoinPile = Math.min(firstPileSize, secondPileSize);
+
+            return firstPileSize > 0 && secondPileSize > 0
+                    && (firstPileSize + secondPileSize) % 3 == 0
+                    && (double) maxCoinPile / minCoinPile <= 2;
         }
     }
 

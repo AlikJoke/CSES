@@ -24,7 +24,10 @@ public class Main {
 
     public static void main(String[] args) {
         final String dnaSequence = readDNASequence();
-        final int maxSequenceLengthOfAnyNucleotide = computeMaxSequenceLengthOfAnyNucleotide(dnaSequence);
+
+        final Repetitions algorithm = new Repetitions(dnaSequence);
+        final int maxSequenceLengthOfAnyNucleotide = algorithm.computeMaxSequenceLengthOfAnyNucleotide();
+
         System.out.print(maxSequenceLengthOfAnyNucleotide);
     }
 
@@ -34,43 +37,52 @@ public class Main {
         }
     }
 
-    private static int computeMaxSequenceLengthOfAnyNucleotide(final String dnaSequence) {
+    private static class Repetitions {
 
-        final int[] currentSeqLength = new int[4];
-        final int[] maxSeqLength = new int[4];
+        private final String dnaSequence;
 
-        final char[] nucleotides = dnaSequence.toCharArray();
-        for (char currentNucleotide : nucleotides) {
-            final int currentNucleotideIdx = getNucleotideIdx(currentNucleotide);
-            final int currentNucleotideSeqLength = currentSeqLength[currentNucleotideIdx] = ++currentSeqLength[currentNucleotideIdx];
-            maxSeqLength[currentNucleotideIdx] = Math.max(maxSeqLength[currentNucleotideIdx], currentNucleotideSeqLength);
-
-            for (int i = 0; i < currentSeqLength.length; i++) {
-                if (currentNucleotideIdx != i) {
-                    currentSeqLength[i] = 0;
-                }
-            }
+        Repetitions(final String dnaSequence) {
+            this.dnaSequence = dnaSequence;
         }
 
-        return Math.max(maxSeqLength[0],
-                Math.max(maxSeqLength[1],
-                        Math.max(maxSeqLength[2], maxSeqLength[3])
-                )
-        );
-    }
+        int computeMaxSequenceLengthOfAnyNucleotide() {
 
-    private static int getNucleotideIdx(final char nucleotide) {
-        switch (nucleotide) {
-            case 'A':
-                return 0;
-            case 'T':
-                return 1;
-            case 'C':
-                return 2;
-            case 'G':
-                return 3;
-            default:
-                throw new IllegalArgumentException("Unsupported nucleotide: " + nucleotide);
+            final int[] currentSeqLength = new int[4];
+            final int[] maxSeqLength = new int[4];
+
+            final char[] nucleotides = this.dnaSequence.toCharArray();
+            for (char currentNucleotide : nucleotides) {
+                final int currentNucleotideIdx = getNucleotideIdx(currentNucleotide);
+                final int currentNucleotideSeqLength = currentSeqLength[currentNucleotideIdx] = ++currentSeqLength[currentNucleotideIdx];
+                maxSeqLength[currentNucleotideIdx] = Math.max(maxSeqLength[currentNucleotideIdx], currentNucleotideSeqLength);
+
+                for (int i = 0; i < currentSeqLength.length; i++) {
+                    if (currentNucleotideIdx != i) {
+                        currentSeqLength[i] = 0;
+                    }
+                }
+            }
+
+            return Math.max(maxSeqLength[0],
+                    Math.max(maxSeqLength[1],
+                            Math.max(maxSeqLength[2], maxSeqLength[3])
+                    )
+            );
+        }
+
+        private int getNucleotideIdx(final char nucleotide) {
+            switch (nucleotide) {
+                case 'A':
+                    return 0;
+                case 'T':
+                    return 1;
+                case 'C':
+                    return 2;
+                case 'G':
+                    return 3;
+                default:
+                    throw new IllegalArgumentException("Unsupported nucleotide: " + nucleotide);
+            }
         }
     }
 }

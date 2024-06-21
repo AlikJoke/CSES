@@ -31,25 +31,11 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         final int[] sourceArray = readSourceArray();
-        final long summaryIncreasingCount = computeSummaryIncreasingStepsCount(sourceArray);
+
+        final IncreasingArray algorithm = new IncreasingArray(sourceArray);
+        final long summaryIncreasingCount = algorithm.computeSummaryIncreasingStepsCount();
 
         System.out.print(summaryIncreasingCount);
-    }
-
-    private static long computeSummaryIncreasingStepsCount(final int[] sourceArray) {
-        long summaryIncreasingCount = 0;
-        int prevNumber = sourceArray[0];
-        for (int i = 1; i < sourceArray.length; i++) {
-            int currentNumber = sourceArray[i];
-
-            if (prevNumber > currentNumber) {
-                summaryIncreasingCount += prevNumber - currentNumber;
-            } else {
-                prevNumber = currentNumber;
-            }
-        }
-
-        return summaryIncreasingCount;
     }
 
     private static int[] readSourceArray() throws Exception {
@@ -62,6 +48,31 @@ public class Main {
             }
 
             return result;
+        }
+    }
+
+    private static class IncreasingArray {
+
+        private final int[] sourceArray;
+
+        IncreasingArray(final int[] sourceArray) {
+            this.sourceArray = sourceArray;
+        }
+
+        long computeSummaryIncreasingStepsCount() {
+            long summaryIncreasingCount = 0;
+            int prevNumber = this.sourceArray[0];
+            for (int i = 1; i < this.sourceArray.length; i++) {
+                int currentNumber = this.sourceArray[i];
+
+                if (prevNumber > currentNumber) {
+                    summaryIncreasingCount += prevNumber - currentNumber;
+                } else {
+                    prevNumber = currentNumber;
+                }
+            }
+
+            return summaryIncreasingCount;
         }
     }
 

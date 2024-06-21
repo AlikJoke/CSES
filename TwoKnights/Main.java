@@ -36,26 +36,48 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        final short chessbordSize = readChessbordSize();
+        final short chessboardSize = readChessboardSize();
 
-        for (short i = 1; i <= chessbordSize; i++) {
-            final int firstKnightAllPositions = i * i;
-            final int secondKnightAllPositions = firstKnightAllPositions - 1;
+        final TwoKnights algorithm = new TwoKnights(chessboardSize);
+        final long[] resultPositions = algorithm.computeNonThreateningPositions();
 
-            final long allKnightsPositions = (long) firstKnightAllPositions * secondKnightAllPositions / 2;
-            final int attackPositionsByOneKnight = 2 * (i - 1) * (i - 2);
-            final int attackPositionsByKnights = attackPositionsByOneKnight * 2;
-
-            final long resultPositions = allKnightsPositions - attackPositionsByKnights;
-
-            System.out.println(resultPositions);
+        for (long positionsCount : resultPositions) {
+            System.out.println(positionsCount);
         }
     }
-}
 
-    private static short readChessbordSize() {
+    private static short readChessboardSize() {
         try (Scanner scanner = new Scanner(System.in)) {
             return scanner.nextShort();
+        }
+    }
+
+    private static class TwoKnights {
+
+        private final short chessboardSize;
+
+        TwoKnights(final short chessboardSize) {
+            this.chessboardSize = chessboardSize;
+        }
+
+        long[] computeNonThreateningPositions() {
+
+            final long[] positions = new long[this.chessboardSize];
+
+            for (short i = 1; i <= this.chessboardSize; i++) {
+                final int firstKnightAllPositions = i * i;
+                final int secondKnightAllPositions = firstKnightAllPositions - 1;
+
+                final long allKnightsPositions = (long) firstKnightAllPositions * secondKnightAllPositions / 2;
+                final int attackPositionsByOneKnight = 2 * (i - 1) * (i - 2);
+                final int attackPositionsByKnights = attackPositionsByOneKnight * 2;
+
+                final long resultPositions = allKnightsPositions - attackPositionsByKnights;
+
+                positions[i - 1] = resultPositions;
+            }
+
+            return positions;
         }
     }
 }

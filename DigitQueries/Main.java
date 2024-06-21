@@ -47,7 +47,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
         final long[] queries = readQueries();
 
-        final char[] results = executeQueries(queries);
+        final DigitQueries algorithm = new DigitQueries(queries);
+        final char[] results = algorithm.executeQueries();
 
         final String formattedOutputResults = composeOutputResults(results);
         System.out.println(formattedOutputResults);
@@ -62,42 +63,6 @@ public class Main {
         return outputAccumulator.toString();
     }
 
-    private static char[] executeQueries(final long[] queries) {
-        final char[] results = new char[queries.length];
-        for (int i = 0; i < queries.length; i++) {
-            results[i] = executeQuery(queries[i]);
-        }
-
-        return results;
-    }
-
-    private static char executeQuery(final long query) {
-        long countOfSymbolsInBiggestDigitUntilQueryNumber = query;
-        int digit = 0;
-
-        long countOfSymbolsInDigitNumbers = 0;
-        long countOfNumbersInPrevDigits = 0;
-        do {
-            countOfSymbolsInBiggestDigitUntilQueryNumber -= countOfSymbolsInDigitNumbers;
-            final long countOfNumbersInDigit = power(10, ++digit) - 1 - countOfNumbersInPrevDigits;
-            countOfSymbolsInDigitNumbers = countOfNumbersInDigit * digit;
-            countOfNumbersInPrevDigits += countOfNumbersInDigit;
-        } while (countOfSymbolsInBiggestDigitUntilQueryNumber > countOfSymbolsInDigitNumbers);
-
-        final long nearestNumberToTarget = (countOfSymbolsInBiggestDigitUntilQueryNumber / digit) + power(10, digit - 1) - 1;
-        final int countOfPositionShiftsFromNearestNumber = (int) (countOfSymbolsInBiggestDigitUntilQueryNumber % digit);
-
-        final long targetNumber = countOfPositionShiftsFromNearestNumber > 0 ? nearestNumberToTarget + 1 : nearestNumberToTarget;
-        final String targetNumberAsString = Long.toString(targetNumber);
-
-        final int targetPositionInNumber = countOfPositionShiftsFromNearestNumber > 0 ? countOfPositionShiftsFromNearestNumber : targetNumberAsString.length();
-        return targetNumberAsString.charAt(targetPositionInNumber - 1);
-    }
-
-    static long power(int a, int b) {
-        return b == 0 ? 1 : a * power(a, b - 1);
-    }
-
     private static long[] readQueries() throws Exception {
         try (ConsoleReader reader = new ConsoleReader()) {
             final int queriesCount = reader.nextInt();
@@ -108,6 +73,51 @@ public class Main {
             }
 
             return queries;
+        }
+    }
+
+    private static class DigitQueries {
+
+        private final long[] queries;
+
+        DigitQueries(final long[] queries) {
+            this.queries = queries;
+        }
+
+        char[] executeQueries() {
+            final char[] results = new char[queries.length];
+            for (int i = 0; i < queries.length; i++) {
+                results[i] = executeQuery(queries[i]);
+            }
+
+            return results;
+        }
+
+        private char executeQuery(final long query) {
+            long countOfSymbolsInBiggestDigitUntilQueryNumber = query;
+            int digit = 0;
+
+            long countOfSymbolsInDigitNumbers = 0;
+            long countOfNumbersInPrevDigits = 0;
+            do {
+                countOfSymbolsInBiggestDigitUntilQueryNumber -= countOfSymbolsInDigitNumbers;
+                final long countOfNumbersInDigit = power(10, ++digit) - 1 - countOfNumbersInPrevDigits;
+                countOfSymbolsInDigitNumbers = countOfNumbersInDigit * digit;
+                countOfNumbersInPrevDigits += countOfNumbersInDigit;
+            } while (countOfSymbolsInBiggestDigitUntilQueryNumber > countOfSymbolsInDigitNumbers);
+
+            final long nearestNumberToTarget = (countOfSymbolsInBiggestDigitUntilQueryNumber / digit) + power(10, digit - 1) - 1;
+            final int countOfPositionShiftsFromNearestNumber = (int) (countOfSymbolsInBiggestDigitUntilQueryNumber % digit);
+
+            final long targetNumber = countOfPositionShiftsFromNearestNumber > 0 ? nearestNumberToTarget + 1 : nearestNumberToTarget;
+            final String targetNumberAsString = Long.toString(targetNumber);
+
+            final int targetPositionInNumber = countOfPositionShiftsFromNearestNumber > 0 ? countOfPositionShiftsFromNearestNumber : targetNumberAsString.length();
+            return targetNumberAsString.charAt(targetPositionInNumber - 1);
+        }
+
+        private long power(int a, int b) {
+            return b == 0 ? 1 : a * power(a, b - 1);
         }
     }
 

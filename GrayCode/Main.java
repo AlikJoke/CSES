@@ -28,9 +28,24 @@ public class Main {
 
     public static void main(String[] args) {
         final int bitStringsLength = readBitStringsLength();
-        final String result = computeResult(bitStringsLength);
 
+        final GrayCode algorithm = new GrayCode(bitStringsLength);
+        final int[] numbersSequence = algorithm.computeGrayNumbersSequence();
+
+        final String result = createOutputResultString(numbersSequence, bitStringsLength);
         System.out.println(result);
+    }
+
+    private static String createOutputResultString(final int[] sequence, final int bitStringsLength) {
+
+        final StringBuilder sb = new StringBuilder((bitStringsLength + 1) * sequence.length);
+
+        for (int grayNumber : sequence) {
+            final String formattedBinaryRepresentation =formatAsBinaryNumberString(grayNumber, bitStringsLength);
+            sb.append(formattedBinaryRepresentation).append(System.lineSeparator());
+        }
+
+        return sb.toString();
     }
 
     private static int readBitStringsLength() {
@@ -39,29 +54,35 @@ public class Main {
         }
     }
 
-    private static String computeResult(final int bitStringsLength) {
-
-        final int countOfStrings = (int) Math.pow(2, bitStringsLength);
-
-        final StringBuilder sb = new StringBuilder((bitStringsLength + 1) * countOfStrings);
-
-        for (int i = 0; i < countOfStrings; i++) {
-            final int grayNumber = computeGrayCode(i);
-
-            final String binaryRepresentation = Integer.toBinaryString(grayNumber);
-            final String formattedBinaryRepresentation = formatBinaryNumber(binaryRepresentation, bitStringsLength);
-
-            sb.append(formattedBinaryRepresentation).append(System.lineSeparator());
-        }
-
-        return sb.toString();
-    }
-
-    private static String formatBinaryNumber(final String binary, final int expectedLength) {
-        return String.format("%" + expectedLength + "s", binary).replace(' ', '0');
+    private static String formatAsBinaryNumberString(final int number, final int expectedLength) {
+        final String binaryRepresentation = Integer.toBinaryString(number);
+        return String.format("%" + expectedLength + "s", binaryRepresentation).replace(' ', '0');
     }
 
     private static int computeGrayCode(final int n) {
         return n ^ (n >> 1);
+    }
+
+    private static class GrayCode {
+
+        private final int bitStringsLength;
+
+        GrayCode(final int bitStringsLength) {
+            this.bitStringsLength = bitStringsLength;
+        }
+
+        int[] computeGrayNumbersSequence() {
+
+            final int countOfStrings = (int) Math.pow(2, bitStringsLength);
+
+            final int[] numbers = new int[countOfStrings];
+            for (int i = 0; i < countOfStrings; i++) {
+                final int grayNumber = computeGrayCode(i);
+
+                numbers[i] = grayNumber;
+            }
+
+            return numbers;
+        }
     }
 }

@@ -30,11 +30,11 @@ import java.util.Scanner;
  */
 public class Main {
 
-    private static final int MODULO = 1_000_000_000 + 7;
-
     public static void main(String[] args) {
         final int length = readBitStringsLength();
-        final long result = computeResult(length);
+
+        final BitStrings algorithm = new BitStrings(length);
+        final long result = algorithm.compute();
 
         System.out.println(result);
         /*
@@ -49,32 +49,43 @@ public class Main {
         }
     }
 
-    private static long computeResult(final int bitStringsLength) {
+    private static class BitStrings {
 
-        final int countOfBitsInBinaryRepresentation = bitStringsLength + 1;
+        private static final int MODULO = 1_000_000_000 + 7;
 
-        final String moduloBinaryRepresentationString = Integer.toBinaryString(MODULO);
-        final char[] moduloBinaryRepresentationChars = moduloBinaryRepresentationString.toCharArray();
+        private final int bitStringsLength;
 
-        if (countOfBitsInBinaryRepresentation < moduloBinaryRepresentationChars.length) {
-            final long resultCount = (long) Math.pow(2, countOfBitsInBinaryRepresentation - 1);
-            return resultCount % MODULO;
+        BitStrings(final int bitStringsLength) {
+            this.bitStringsLength = bitStringsLength;
         }
 
-        long acc = (long) Math.pow(2, moduloBinaryRepresentationChars.length - 1);
-        int currentBitIndex = moduloBinaryRepresentationChars.length;
-        while (currentBitIndex < countOfBitsInBinaryRepresentation) {
+        long compute() {
 
-            if (acc < MODULO) {
-                acc <<= 1;
-                currentBitIndex++;
+            final int countOfBitsInBinaryRepresentation = bitStringsLength + 1;
+
+            final String moduloBinaryRepresentationString = Integer.toBinaryString(MODULO);
+            final char[] moduloBinaryRepresentationChars = moduloBinaryRepresentationString.toCharArray();
+
+            if (countOfBitsInBinaryRepresentation < moduloBinaryRepresentationChars.length) {
+                final long resultCount = (long) Math.pow(2, countOfBitsInBinaryRepresentation - 1);
+                return resultCount % MODULO;
             }
 
-            if (acc >= MODULO) {
-                acc -= MODULO;
+            long acc = (long) Math.pow(2, moduloBinaryRepresentationChars.length - 1);
+            int currentBitIndex = moduloBinaryRepresentationChars.length;
+            while (currentBitIndex < countOfBitsInBinaryRepresentation) {
+
+                if (acc < MODULO) {
+                    acc <<= 1;
+                    currentBitIndex++;
+                }
+
+                if (acc >= MODULO) {
+                    acc -= MODULO;
+                }
             }
+
+            return acc;
         }
-
-        return acc;
     }
 }

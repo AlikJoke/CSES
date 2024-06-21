@@ -27,7 +27,9 @@ public class Main {
 
     public static void main(String[] args) {
         final String inputSymbolsSequence = readInputSymbolsSequence();
-        final String palindrome = computePalindrome(inputSymbolsSequence);
+
+        final PalindromeReorder algorithm = new PalindromeReorder(inputSymbolsSequence);
+        final String palindrome = algorithm.tryComputePalindrome();
 
         System.out.print(palindrome == null ? NO_SOLUTION : palindrome);
     }
@@ -38,44 +40,56 @@ public class Main {
         }
     }
 
-    private static String computePalindrome(final String inputSymbolsSequence) {
+    private static class PalindromeReorder {
 
-        final char[] symbols = inputSymbolsSequence.toCharArray();
-        final int countOfPossibleUniqueSymbols = 'Z' - 'A' + 1;
-        final int[] differentCharsCount = new int[countOfPossibleUniqueSymbols];
+        private static final char FIRST_ALPHABET_SYMBOL = 'A';
+        private static final char LAST_ALPHABET_SYMBOL = 'Z';
 
-        for (char symbol : symbols) {
-            final int charIndex = 'Z' - symbol;
-            differentCharsCount[charIndex] = ++differentCharsCount[charIndex];
+        private final String sourceSymbolsSequence;
+
+        PalindromeReorder(final String sourceSymbolsSequence) {
+            this.sourceSymbolsSequence = sourceSymbolsSequence;
         }
 
-        final boolean isSymbolsCountEven = symbols.length % 2 == 0;
-        final char[] result = new char[symbols.length];
-        int currentPalindromePosition = 0;
+        String tryComputePalindrome() {
 
-        char charWithOddCount = 0;
-        for (int i = 0; i < differentCharsCount.length; i++) {
-            final int oneCharCount = differentCharsCount[i];
-            final char currentChar = (char) ('Z' - i);
-            if (oneCharCount % 2 == 1) {
+            final char[] symbols = sourceSymbolsSequence.toCharArray();
+            final int countOfPossibleUniqueSymbols = LAST_ALPHABET_SYMBOL - FIRST_ALPHABET_SYMBOL + 1;
+            final int[] differentCharsCount = new int[countOfPossibleUniqueSymbols];
 
-                if (isSymbolsCountEven || charWithOddCount != 0) {
-                    return null;
-                } else {
-                    charWithOddCount = currentChar;
+            for (char symbol : symbols) {
+                final int charIndex = LAST_ALPHABET_SYMBOL - symbol;
+                differentCharsCount[charIndex] = ++differentCharsCount[charIndex];
+            }
+
+            final boolean isSymbolsCountEven = symbols.length % 2 == 0;
+            final char[] result = new char[symbols.length];
+            int currentPalindromePosition = 0;
+
+            char charWithOddCount = 0;
+            for (int i = 0; i < differentCharsCount.length; i++) {
+                final int oneCharCount = differentCharsCount[i];
+                final char currentChar = (char) (LAST_ALPHABET_SYMBOL - i);
+                if (oneCharCount % 2 == 1) {
+
+                    if (isSymbolsCountEven || charWithOddCount != 0) {
+                        return null;
+                    } else {
+                        charWithOddCount = currentChar;
+                    }
+                }
+
+                for (int j = 0; j < oneCharCount / 2; j++) {
+                    result[currentPalindromePosition] = currentChar;
+                    result[result.length - ++currentPalindromePosition] = currentChar;
                 }
             }
 
-            for (int j = 0; j < oneCharCount / 2; j++) {
-                result[currentPalindromePosition] = currentChar;
-                result[result.length - ++currentPalindromePosition] = currentChar;
+            if (charWithOddCount != 0) {
+                result[currentPalindromePosition] = charWithOddCount;
             }
-        }
 
-        if (charWithOddCount != 0) {
-            result[currentPalindromePosition] = charWithOddCount;
+            return new String(result);
         }
-
-        return new String(result);
     }
 }

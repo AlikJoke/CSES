@@ -45,113 +45,12 @@ public class Main {
     public static void main(String[] args) throws Exception {
         final int[][] requestedCoordinates = readRequestedCoordinates();
 
-        for (int[] coordinates : requestedCoordinates) {
-            final long computedNumber = computeNumberByCoordinates(coordinates);
+        final NumberSpiral algorithm = new NumberSpiral(requestedCoordinates);
+        final long[] computedNumbers = algorithm.computeNumbers();
+
+        for (long computedNumber : computedNumbers) {
             System.out.println(computedNumber);
         }
-    }
-
-    private static long computeNumberByCoordinates(final int[] coordinates) {
-
-        final int y = coordinates[0];
-        final int x = coordinates[1];
-
-        final int maxCoordinate = Math.max(x, y);
-        long currentNumber = Math.max((long) (maxCoordinate - 1) * (maxCoordinate - 1), 1);
-
-        int currentY;
-        int currentX;
-        if (currentNumber % 2 == 0) {
-            currentX = 1;
-            currentY = Math.max(maxCoordinate - 1, 1);
-        } else {
-            currentX = Math.max(maxCoordinate - 1, 1);
-            currentY = 1;
-        }
-
-        boolean oneOfCoordinateDecrementedToStartPosition = currentNumber > 1;
-
-        while (currentX != x || currentY != y) {
-
-            if (currentX == currentY) {
-
-                if (currentX == 1) {
-                    currentX++;
-                    currentNumber++;
-                } else if (currentX % 2 == 0) {
-
-                    if (currentY != y || currentX < x) {
-                        currentNumber += currentX - 1;
-                        currentX = 1;
-                    } else {
-                        currentNumber += currentX - x;
-                        currentX = x;
-                    }
-
-                    oneOfCoordinateDecrementedToStartPosition = currentX == 1;
-                } else {
-
-                    if (currentX != x || currentY < y) {
-                        currentNumber += currentY - 1;
-                        currentY = 1;
-                    } else {
-                        currentNumber += currentY - y;
-                        currentY = y;
-                    }
-
-                    oneOfCoordinateDecrementedToStartPosition = currentY == 1;
-                }
-            } else if (currentX > currentY) {
-                if (oneOfCoordinateDecrementedToStartPosition) {
-                    currentX++;
-                    currentNumber++;
-                    oneOfCoordinateDecrementedToStartPosition = false;
-                } else if (currentX % 2 == 0) {
-
-                    if (currentX != x || currentY > y) {
-                        currentNumber += currentX - 1;
-                        currentY = currentX;
-                    } else {
-                        currentNumber += Math.abs(currentY - y);
-                        currentY = y;
-                    }
-                } else {
-
-                    if (currentX != x || currentY < y) {
-                        currentNumber += currentY - 1;
-                        currentY = 1;
-                    } else {
-                        currentNumber += Math.abs(currentY - y);
-                        currentY = y;
-                    }
-
-                    oneOfCoordinateDecrementedToStartPosition = currentY == 1;
-                }
-            } else if (oneOfCoordinateDecrementedToStartPosition) {
-                currentY++;
-                currentNumber++;
-                oneOfCoordinateDecrementedToStartPosition = false;
-            } else if (currentY % 2 == 0) {
-
-                if (currentY != y || currentX > x) {
-                    currentNumber += currentY - 1;
-                    currentX = currentY;
-                } else {
-                    currentNumber += Math.abs(currentX - x);
-                    currentX = x;
-                }
-            } else {
-                if (currentY != y || currentX > x) {
-                    currentNumber += currentY - 1;
-                    currentX = currentY;
-                } else {
-                    currentNumber += Math.abs(currentX - x);
-                    currentX = x;
-                }
-            }
-        }
-
-        return currentNumber;
     }
 
     private static int[][] readRequestedCoordinates() throws Exception {
@@ -165,6 +64,128 @@ public class Main {
             }
 
             return result;
+        }
+    }
+
+    private static class NumberSpiral {
+
+        private final int[][] targetCoordinates;
+
+        NumberSpiral(final int[][] targetCoordinates) {
+            this.targetCoordinates = targetCoordinates;
+        }
+
+        long[] computeNumbers() {
+            final long[] numbers = new long[this.targetCoordinates.length];
+            for (int i = 0; i < this.targetCoordinates.length; i++) {
+                final int[] coordinates = this.targetCoordinates[i];
+                numbers[i] = computeNumberByCoordinates(coordinates);
+            }
+
+            return numbers;
+        }
+
+        private long computeNumberByCoordinates(final int[] coordinates) {
+
+            final int y = coordinates[0];
+            final int x = coordinates[1];
+
+            final int maxCoordinate = Math.max(x, y);
+            long currentNumber = Math.max((long) (maxCoordinate - 1) * (maxCoordinate - 1), 1);
+
+            int currentY;
+            int currentX;
+            if (currentNumber % 2 == 0) {
+                currentX = 1;
+                currentY = Math.max(maxCoordinate - 1, 1);
+            } else {
+                currentX = Math.max(maxCoordinate - 1, 1);
+                currentY = 1;
+            }
+
+            boolean oneOfCoordinateDecrementedToStartPosition = currentNumber > 1;
+
+            while (currentX != x || currentY != y) {
+
+                if (currentX == currentY) {
+
+                    if (currentX == 1) {
+                        currentX++;
+                        currentNumber++;
+                    } else if (currentX % 2 == 0) {
+
+                        if (currentY != y || currentX < x) {
+                            currentNumber += currentX - 1;
+                            currentX = 1;
+                        } else {
+                            currentNumber += currentX - x;
+                            currentX = x;
+                        }
+
+                        oneOfCoordinateDecrementedToStartPosition = currentX == 1;
+                    } else {
+
+                        if (currentX != x || currentY < y) {
+                            currentNumber += currentY - 1;
+                            currentY = 1;
+                        } else {
+                            currentNumber += currentY - y;
+                            currentY = y;
+                        }
+
+                        oneOfCoordinateDecrementedToStartPosition = currentY == 1;
+                    }
+                } else if (currentX > currentY) {
+                    if (oneOfCoordinateDecrementedToStartPosition) {
+                        currentX++;
+                        currentNumber++;
+                        oneOfCoordinateDecrementedToStartPosition = false;
+                    } else if (currentX % 2 == 0) {
+
+                        if (currentX != x || currentY > y) {
+                            currentNumber += currentX - 1;
+                            currentY = currentX;
+                        } else {
+                            currentNumber += Math.abs(currentY - y);
+                            currentY = y;
+                        }
+                    } else {
+
+                        if (currentX != x || currentY < y) {
+                            currentNumber += currentY - 1;
+                            currentY = 1;
+                        } else {
+                            currentNumber += Math.abs(currentY - y);
+                            currentY = y;
+                        }
+
+                        oneOfCoordinateDecrementedToStartPosition = currentY == 1;
+                    }
+                } else if (oneOfCoordinateDecrementedToStartPosition) {
+                    currentY++;
+                    currentNumber++;
+                    oneOfCoordinateDecrementedToStartPosition = false;
+                } else if (currentY % 2 == 0) {
+
+                    if (currentY != y || currentX > x) {
+                        currentNumber += currentY - 1;
+                        currentX = currentY;
+                    } else {
+                        currentNumber += Math.abs(currentX - x);
+                        currentX = x;
+                    }
+                } else {
+                    if (currentY != y || currentX > x) {
+                        currentNumber += currentY - 1;
+                        currentX = currentY;
+                    } else {
+                        currentNumber += Math.abs(currentX - x);
+                        currentX = x;
+                    }
+                }
+            }
+
+            return currentNumber;
         }
     }
 

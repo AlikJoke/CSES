@@ -31,14 +31,13 @@ import java.util.Scanner;
  */
 public class Main {
 
-    private static final char FIRST_ALPHABET_SYMBOL = 'a';
-    private static final char LAST_ALPHABET_SYMBOL = 'z';
-
     public static void main(String[] args) {
         final String string = readInputSourceString();
 
+        final CreatingStrings algorithm = new CreatingStrings(string);
+
         final StringBuilder outputAcc = createOutputAccumulator(string.length());
-        final int realCountOfStrings = generateAllStrings(string, outputAcc);
+        final int realCountOfStrings = algorithm.generateAllStrings(outputAcc);
 
         System.out.println(realCountOfStrings);
         System.out.println(outputAcc);
@@ -55,137 +54,149 @@ public class Main {
         return new StringBuilder((inputStringLength + 1) * maxCountOfStringsIfAllSymbolsUnique);
     }
 
-    private static int generateAllStrings(final String inputString, final StringBuilder outputAccumulator) {
-
-        final char[] chars = inputString.toCharArray();
-
-        final int alphabetSize = LAST_ALPHABET_SYMBOL - FIRST_ALPHABET_SYMBOL + 1;
-        final char[] uniqueSymbols = new char[alphabetSize];
-        final int[] symbolsFrequencies = new int[alphabetSize];
-
-        fillUniqueSymbolsFrequencies(chars, uniqueSymbols, symbolsFrequencies);
-
-        final char[] sortedInputSymbols = createSortedInputSymbolsArray(chars.length, uniqueSymbols, symbolsFrequencies);
-
-        return generateStringsFromUniqueSymbolsAsRoot(uniqueSymbols, sortedInputSymbols, outputAccumulator);
-    }
-
-    private static int generateStringsFromUniqueSymbolsAsRoot(
-            final char[] uniqueSymbols,
-            final char[] sortedInputStringSymbols,
-            final StringBuilder outputAccumulator) {
-        int countOfStrings = 0;
-        for (final char initialChar : uniqueSymbols) {
-            if (initialChar == 0) {
-                continue;
-            }
-
-            final char[] sortedAvailableSymbols = copyExceptFirstOccurrenceOfSymbol(sortedInputStringSymbols, initialChar);
-            countOfStrings += generateAllStringsInBranch(String.valueOf(initialChar), sortedAvailableSymbols, outputAccumulator);
-        }
-
-        return countOfStrings;
-    }
-
-    private static char[] copyExceptFirstOccurrenceOfSymbol(final char[] source, final char symbolToExclude) {
-        final char[] result = new char[source.length - 1];
-
-        boolean firstSymbolAlreadySkipped = false;
-        int i = 0;
-        for (char currentChar : source) {
-            if (currentChar != symbolToExclude || firstSymbolAlreadySkipped) {
-                result[i++] = currentChar;
-            } else {
-                firstSymbolAlreadySkipped = true;
-            }
-        }
-
-        return result;
-    }
-
-    private static char[] createSortedInputSymbolsArray(
-            final int inputStringLength,
-            final char[] uniqueSymbols,
-            final int[] symbolsFrequencies) {
-        final char[] sortedInputSymbols = new char[inputStringLength];
-        for (int i = 0, j = 0; i < symbolsFrequencies.length; i++) {
-            int frequency = symbolsFrequencies[i];
-            if (frequency == 0) {
-                continue;
-            }
-
-            final char symbol = uniqueSymbols[i];
-            while (frequency-- > 0) {
-                sortedInputSymbols[j++] = symbol;
-            }
-        }
-
-        return sortedInputSymbols;
-    }
-
-    private static void fillUniqueSymbolsFrequencies(
-            final char[] inputStringChars,
-            final char[] uniqueSymbols,
-            final int[] symbolsFrequencies) {
-        final int alphabetSize = uniqueSymbols.length;
-        for (final char symbol : inputStringChars) {
-            final int indexOfChar = alphabetSize - 1 - (LAST_ALPHABET_SYMBOL - symbol);
-
-            uniqueSymbols[indexOfChar] = symbol;
-            symbolsFrequencies[indexOfChar] = ++symbolsFrequencies[indexOfChar];
-        }
-    }
-
-    private static int generateAllStringsInBranch(
-            final String initialString,
-            final char[] availableSymbols,
-            final StringBuilder outputAccumulator) {
-        if (availableSymbols.length == 0) {
-            outputAccumulator.append(initialString).append(System.lineSeparator());
-
-            return 1;
-        }
-
-        int countOfStringsInBranch = 0;
-        for (int i = 0; i < availableSymbols.length; i++) {
-            final char currentSymbol = availableSymbols[i];
-            if (i > 0 && currentSymbol == availableSymbols[i - 1]) {
-                continue;
-            }
-
-            final char[] nextAvailableSymbols = copyExceptElement(availableSymbols, i);
-            countOfStringsInBranch += generateAllStringsInBranch(initialString + currentSymbol, nextAvailableSymbols, outputAccumulator);
-        }
-
-        return countOfStringsInBranch;
-    }
-
-    private static char[] copyExceptElement(final char[] source, final int excludedElementPosition) {
-
-        final char[] result = new char[source.length - 1];
-
-        System.arraycopy(
-                source,
-                0,
-                result,
-                0,
-                excludedElementPosition
-        );
-
-        if (excludedElementPosition != source.length - 1) {
-            System.arraycopy(
-                    source,
-                    excludedElementPosition + 1,
-                    result,
-                    excludedElementPosition,
-                    result.length - excludedElementPosition
-            );
-        }
-
-        return result;
-    }
-
     private static int factorial(final int n) {
         return n == 0 ? 1 : n * factorial(n - 1);
+    }
+
+    private static class CreatingStrings {
+
+        private static final char FIRST_ALPHABET_SYMBOL = 'a';
+        private static final char LAST_ALPHABET_SYMBOL = 'z';
+
+        private final String inputString;
+
+        CreatingStrings(final String inputString) {
+            this.inputString = inputString;
+        }
+
+        int generateAllStrings(final StringBuilder outputAccumulator) {
+
+            final char[] chars = inputString.toCharArray();
+
+            final int alphabetSize = LAST_ALPHABET_SYMBOL - FIRST_ALPHABET_SYMBOL + 1;
+            final char[] uniqueSymbols = new char[alphabetSize];
+            final int[] symbolsFrequencies = new int[alphabetSize];
+
+            fillUniqueSymbolsFrequencies(chars, uniqueSymbols, symbolsFrequencies);
+
+            final char[] sortedInputSymbols = createSortedInputSymbolsArray(chars.length, uniqueSymbols, symbolsFrequencies);
+
+            return generateStringsFromUniqueSymbolsAsRoot(uniqueSymbols, sortedInputSymbols, outputAccumulator);
+        }
+
+        private int generateStringsFromUniqueSymbolsAsRoot(
+                final char[] uniqueSymbols,
+                final char[] sortedInputStringSymbols,
+                final StringBuilder outputAccumulator) {
+            int countOfStrings = 0;
+            for (final char initialChar : uniqueSymbols) {
+                if (initialChar == 0) {
+                    continue;
+                }
+
+                final char[] sortedAvailableSymbols = copyExceptFirstOccurrenceOfSymbol(sortedInputStringSymbols, initialChar);
+                countOfStrings += generateAllStringsInBranch(String.valueOf(initialChar), sortedAvailableSymbols, outputAccumulator);
+            }
+
+            return countOfStrings;
+        }
+
+        private char[] copyExceptFirstOccurrenceOfSymbol(final char[] source, final char symbolToExclude) {
+            final char[] result = new char[source.length - 1];
+
+            boolean firstSymbolAlreadySkipped = false;
+            int i = 0;
+            for (char currentChar : source) {
+                if (currentChar != symbolToExclude || firstSymbolAlreadySkipped) {
+                    result[i++] = currentChar;
+                } else {
+                    firstSymbolAlreadySkipped = true;
+                }
+            }
+
+            return result;
+        }
+
+        private char[] createSortedInputSymbolsArray(
+                final int inputStringLength,
+                final char[] uniqueSymbols,
+                final int[] symbolsFrequencies) {
+            final char[] sortedInputSymbols = new char[inputStringLength];
+            for (int i = 0, j = 0; i < symbolsFrequencies.length; i++) {
+                int frequency = symbolsFrequencies[i];
+                if (frequency == 0) {
+                    continue;
+                }
+
+                final char symbol = uniqueSymbols[i];
+                while (frequency-- > 0) {
+                    sortedInputSymbols[j++] = symbol;
+                }
+            }
+
+            return sortedInputSymbols;
+        }
+
+        private void fillUniqueSymbolsFrequencies(
+                final char[] inputStringChars,
+                final char[] uniqueSymbols,
+                final int[] symbolsFrequencies) {
+            final int alphabetSize = uniqueSymbols.length;
+            for (final char symbol : inputStringChars) {
+                final int indexOfChar = alphabetSize - 1 - (LAST_ALPHABET_SYMBOL - symbol);
+
+                uniqueSymbols[indexOfChar] = symbol;
+                symbolsFrequencies[indexOfChar] = ++symbolsFrequencies[indexOfChar];
+            }
+        }
+
+        private int generateAllStringsInBranch(
+                final String initialString,
+                final char[] availableSymbols,
+                final StringBuilder outputAccumulator) {
+            if (availableSymbols.length == 0) {
+                outputAccumulator.append(initialString).append(System.lineSeparator());
+
+                return 1;
+            }
+
+            int countOfStringsInBranch = 0;
+            for (int i = 0; i < availableSymbols.length; i++) {
+                final char currentSymbol = availableSymbols[i];
+                if (i > 0 && currentSymbol == availableSymbols[i - 1]) {
+                    continue;
+                }
+
+                final char[] nextAvailableSymbols = copyExceptElement(availableSymbols, i);
+                countOfStringsInBranch += generateAllStringsInBranch(initialString + currentSymbol, nextAvailableSymbols, outputAccumulator);
+            }
+
+            return countOfStringsInBranch;
+        }
+
+        private char[] copyExceptElement(final char[] source, final int excludedElementPosition) {
+
+            final char[] result = new char[source.length - 1];
+
+            System.arraycopy(
+                    source,
+                    0,
+                    result,
+                    0,
+                    excludedElementPosition
+            );
+
+            if (excludedElementPosition != source.length - 1) {
+                System.arraycopy(
+                        source,
+                        excludedElementPosition + 1,
+                        result,
+                        excludedElementPosition,
+                        result.length - excludedElementPosition
+                );
+            }
+
+            return result;
+        }
     }
 }

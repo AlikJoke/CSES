@@ -29,11 +29,11 @@ public class Main {
     public static void main(String[] args) throws Exception {
         final boolean[] sequenceTable = createSequenceTable();
 
-        for (int i = 1; i < sequenceTable.length; i++) {
-            if (!sequenceTable[i]) {
-                System.out.print(i);
-                break;
-            }
+        final MissingNumber algorithm = new MissingNumber(sequenceTable);
+        final int missingNumber = algorithm.computeMissingNumber();
+
+        if (missingNumber != -1) {
+            System.out.println(missingNumber);
         }
     }
 
@@ -48,6 +48,25 @@ public class Main {
             }
 
             return numbersTable;
+        }
+    }
+
+    private static class MissingNumber {
+
+        private final boolean[] sequenceTable;
+
+        MissingNumber(final boolean[] sequenceTable) {
+            this.sequenceTable = sequenceTable;
+        }
+
+        int computeMissingNumber() {
+            for (int i = 1; i < sequenceTable.length; i++) {
+                if (!sequenceTable[i]) {
+                    return i;
+                }
+            }
+
+            return -1;
         }
     }
 

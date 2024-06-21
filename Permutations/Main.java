@@ -37,8 +37,11 @@ public class Main {
 
     public static void main(String[] args) {
         final int sequenceLength = readSequenceLength();
-        final String outputSequence = computeBeautifulSequenceString(sequenceLength);
 
+        final Permutations permutations = new Permutations(sequenceLength);
+        final int[] beautifulSequence = permutations.tryComputeBeautifulSequence();
+
+        final String outputSequence = composeOutputSequenceString(beautifulSequence);
         System.out.print(outputSequence);
     }
 
@@ -46,13 +49,6 @@ public class Main {
         try (Scanner scanner = new Scanner(System.in)) {
             return scanner.nextInt();
         }
-    }
-
-    private static String computeBeautifulSequenceString(final int sequenceLength) {
-        final int[] sequence = new int[sequenceLength];
-        fillSequence(sequence);
-
-        return composeOutputSequenceString(sequence);
     }
 
     private static String composeOutputSequenceString(final int[] sequence) {
@@ -71,40 +67,57 @@ public class Main {
         return sb.toString();
     }
 
-    private static void replaceMidOfSequence(final int[] sequence, final int median) {
+    private static class Permutations {
 
-        final boolean isSequenceLengthEven = sequence.length % 2 == 0;
-        if (isSequenceLengthEven) {
-            final int medianPrev = sequence[median - 1];
-            final int medianNext = sequence[median];
-            System.arraycopy(sequence, 0, sequence, 1, median - 1);
-            System.arraycopy(sequence, median + 1, sequence, median, sequence.length - median - 1);
+        private final int sequenceLength;
 
-            sequence[0] = medianPrev;
-            sequence[sequence.length - 1] = medianNext;
-        } else {
-            System.arraycopy(sequence, 0, sequence, 1, median - 1);
-            sequence[0] = median;
+        Permutations(final int sequenceLength) {
+            this.sequenceLength = sequenceLength;
         }
-    }
 
-    private static void fillSequence(final int[] sequence) {
+        int[] tryComputeBeautifulSequence() {
 
-        final boolean isSequenceLengthEven = sequence.length % 2 == 0;
-        final int median = (isSequenceLengthEven ? sequence.length : sequence.length + 1) >> 1;
+            final int[] sequence = new int[sequenceLength];
+            fillSequence(sequence);
 
-        for (int i = 0; i < median; i++) {
-            final int symmetricNumberPositionFromEndOfSeq = sequence.length - i;
+            return sequence;
+        }
 
-            if (i % 2 == 1) {
-                sequence[i] = i + 1;
-                sequence[symmetricNumberPositionFromEndOfSeq - 1] = symmetricNumberPositionFromEndOfSeq;
+        private void replaceMidOfSequence(final int[] sequence, final int median) {
+
+            final boolean isSequenceLengthEven = sequence.length % 2 == 0;
+            if (isSequenceLengthEven) {
+                final int medianPrev = sequence[median - 1];
+                final int medianNext = sequence[median];
+                System.arraycopy(sequence, 0, sequence, 1, median - 1);
+                System.arraycopy(sequence, median + 1, sequence, median, sequence.length - median - 1);
+
+                sequence[0] = medianPrev;
+                sequence[sequence.length - 1] = medianNext;
             } else {
-                sequence[i] = symmetricNumberPositionFromEndOfSeq;
-                sequence[symmetricNumberPositionFromEndOfSeq - 1] = i + 1;
+                System.arraycopy(sequence, 0, sequence, 1, median - 1);
+                sequence[0] = median;
             }
         }
 
-        replaceMidOfSequence(sequence, median);
+        private void fillSequence(final int[] sequence) {
+
+            final boolean isSequenceLengthEven = sequence.length % 2 == 0;
+            final int median = (isSequenceLengthEven ? sequence.length : sequence.length + 1) >> 1;
+
+            for (int i = 0; i < median; i++) {
+                final int symmetricNumberPositionFromEndOfSeq = sequence.length - i;
+
+                if (i % 2 == 1) {
+                    sequence[i] = i + 1;
+                    sequence[symmetricNumberPositionFromEndOfSeq - 1] = symmetricNumberPositionFromEndOfSeq;
+                } else {
+                    sequence[i] = symmetricNumberPositionFromEndOfSeq;
+                    sequence[symmetricNumberPositionFromEndOfSeq - 1] = i + 1;
+                }
+            }
+
+            replaceMidOfSequence(sequence, median);
+        }
     }
 }

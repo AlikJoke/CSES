@@ -28,7 +28,9 @@ public class Main {
 
     public static void main(String[] args) {
         final int n = readInputNumber();
-        final int result = computeCountOfTrailingZeros(n);
+
+        final TrailingZeros algorithm = new TrailingZeros(n);
+        final int result = algorithm.computeCountOfTrailingZeros();
 
         System.out.print(result);
     }
@@ -39,18 +41,27 @@ public class Main {
         }
     }
 
-    private static int computeCountOfTrailingZeros(final int n) {
+    private static class TrailingZeros {
 
-        int countOfTrailingZeros = 0;
-        for (int i = 1;;i++) {
-            final int divisionByPowerOfFive = (int) (n / (Math.pow(5, i)));
-            if (divisionByPowerOfFive == 0) {
-                break;
-            }
+        private final int n;
 
-            countOfTrailingZeros += divisionByPowerOfFive;
+        TrailingZeros(final int n) {
+            this.n = n;
         }
 
-        return countOfTrailingZeros;
+        int computeCountOfTrailingZeros() {
+
+            int countOfTrailingZeros = 0;
+            for (int i = 1;;i++) {
+                final int divisionByPowerOfFive = (int) (this.n / (Math.pow(5, i)));
+                if (divisionByPowerOfFive == 0) {
+                    break;
+                }
+
+                countOfTrailingZeros += divisionByPowerOfFive;
+            }
+
+            return countOfTrailingZeros;
+        }
     }
 }

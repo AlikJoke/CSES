@@ -36,53 +36,20 @@ import java.util.Scanner;
  */
 public class Main {
 
-    private static final int LEFT_STACK_ID = 1;
-    private static final int MIDDLE_STACK_ID = 2;
-    private static final int RIGHT_STACK_ID = 3;
-
     public static void main(String[] args) {
         final int disksCount = readDisksCount();
 
-        final String result = move(disksCount);
-        System.out.println(result);
-    }
+        final TowerOfHanoi algorithm = new TowerOfHanoi(disksCount);
+        final int[][] result = algorithm.move();
 
-    private static int readDisksCount() {
-        try (Scanner scanner = new Scanner(System.in)) {
-            return scanner.nextInt();
-        }
-    }
+        final StringBuilder acc = new StringBuilder(result.length * 4 + 10);
+        acc.append(result.length).append(System.lineSeparator());
 
-    private static int power(final int base, final int degree) {
-        return degree == 0 ? 1 : base * power(base, degree - 1);
-    }
-
-    private static String move(final int disksCount) {
-        final int movesCount = power(2, disksCount) - 1;
-
-        final StringBuilder acc = new StringBuilder(movesCount * 4 + 10);
-        acc.append(movesCount).append(System.lineSeparator());
-
-        move(disksCount, LEFT_STACK_ID, MIDDLE_STACK_ID, RIGHT_STACK_ID, acc);
-
-        return acc.toString();
-    }
-
-    private static void move(
-            final int diskNumber,
-            final int leftStack,
-            final int middleStack,
-            final int rightStack,
-            final StringBuilder acc) {
-
-        if (diskNumber == 1) {
-            appendMoveInfo(leftStack, rightStack, acc);
-            return;
+        for (int[] oneMoveInfo : result) {
+            appendMoveInfo(oneMoveInfo[0], oneMoveInfo[1], acc);
         }
 
-        move(diskNumber - 1, leftStack, rightStack, middleStack, acc);
-        appendMoveInfo(leftStack, rightStack, acc);
-        move(diskNumber - 1, middleStack, leftStack, rightStack, acc);
+        System.out.println(acc);
     }
 
     private static void appendMoveInfo(
@@ -92,5 +59,55 @@ public class Main {
         acc.append(sourceStack)
                 .append(' ').append(targetStack)
                 .append(System.lineSeparator());
+    }
+
+    private static int readDisksCount() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            return scanner.nextInt();
+        }
+    }
+
+    private static class TowerOfHanoi {
+
+        private static final int LEFT_STACK_ID = 1;
+        private static final int MIDDLE_STACK_ID = 2;
+        private static final int RIGHT_STACK_ID = 3;
+
+        private final int disksCount;
+
+        TowerOfHanoi(final int disksCount) {
+            this.disksCount = disksCount;
+        }
+
+        int[][] move() {
+            final int movesCount = power(2, disksCount) - 1;
+
+            final int[][] result = new int[movesCount][2];
+            move(disksCount, LEFT_STACK_ID, MIDDLE_STACK_ID, RIGHT_STACK_ID, result, 0);
+
+            return result;
+        }
+
+        private int power(final int base, final int degree) {
+            return degree == 0 ? 1 : base * power(base, degree - 1);
+        }
+
+        private int move(
+                final int diskNumber,
+                final int leftStack,
+                final int middleStack,
+                final int rightStack,
+                final int[][] moves,
+                final int moveIndex) {
+
+            if (diskNumber == 1) {
+                moves[moveIndex] = new int[] { leftStack, rightStack };
+                return moveIndex + 1;
+            }
+
+            int currentMoveIndex = move(diskNumber - 1, leftStack, rightStack, middleStack, moves, moveIndex);
+            moves[currentMoveIndex++] = new int[] { leftStack, rightStack };
+            return move(diskNumber - 1, middleStack, leftStack, rightStack, moves, currentMoveIndex);
+        }
     }
 }

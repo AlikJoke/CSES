@@ -30,122 +30,132 @@ import java.util.Scanner;
  */
 public class Main {
 
-    private static final int GRID_BOUND_INDEX = 6;
-    private static final int PATH_LENGTH = 48;
-
-    private static final char RIGHT_DIRECTION = 'R';
-    private static final char LEFT_DIRECTION = 'L';
-    private static final char DOWN_DIRECTION = 'D';
-    private static final char UP_DIRECTION = 'U';
-    private static final char MASK_DIRECTION = '?';
-
     public static void main(String[] args) {
         final String pathsMask = readPathsMask();
-        final int paths = traversePaths(pathsMask);
+
+        final GridPaths algorithm = new GridPaths(pathsMask);
+        final int paths = algorithm.computePathsCount();
+
         System.out.println(paths);
-    }
-
-    private static int traversePaths(final String pathsMask) {
-        return traversePaths(0, 0, 0, new boolean[GRID_BOUND_INDEX + 1][GRID_BOUND_INDEX + 1], pathsMask);
-    }
-
-    private static int traversePaths(
-            final int x,
-            final int y,
-            final int currentPathStep,
-            final boolean[][] visitedSections,
-            final String pathsMask) {
-
-        if (currentPathStep == PATH_LENGTH) {
-            return isEndReached(x, y) ? 1 : 0;
-        }
-
-        final char directionFromMask = pathsMask.charAt(currentPathStep);
-
-        final int nextPathStep = currentPathStep + 1;
-
-        if (directionFromMask != MASK_DIRECTION) {
-            return traverse(x, y, directionFromMask, visitedSections, pathsMask, nextPathStep);
-        } else if (y > 2 && visitedSections[x][y - 2] && !visitedSections[x][y - 1]
-                && (x > 0 && visitedSections[x - 1][y - 1] || x < GRID_BOUND_INDEX && visitedSections[x + 1][y - 1])) {
-            return traverse(x, y, UP_DIRECTION, visitedSections, pathsMask, nextPathStep);
-        } else if (x > 0 && y < 5 && visitedSections[x][y + 2] && !visitedSections[x][y + 1]
-                && (visitedSections[x - 1][y + 1] || visitedSections[x + 1][y + 1])){
-            return traverse(x, y, DOWN_DIRECTION, visitedSections, pathsMask, nextPathStep);
-        } else if (y > 0 && x > 2 && visitedSections[x - 2][y] && !visitedSections[x - 1][y] && visitedSections[x - 1][y - 1]) {
-            return traverse(x, y, LEFT_DIRECTION, visitedSections, pathsMask, nextPathStep);
-        } else {
-            return traverse(x, y, RIGHT_DIRECTION, visitedSections, pathsMask, nextPathStep)
-                    + traverse(x, y, LEFT_DIRECTION, visitedSections, pathsMask, nextPathStep)
-                    + traverse(x, y, UP_DIRECTION, visitedSections, pathsMask, nextPathStep)
-                    + traverse(x, y, DOWN_DIRECTION, visitedSections, pathsMask, nextPathStep);
-        }
-    }
-
-    private static int traverse(
-            final int x,
-            final int y,
-            final char direction,
-            final boolean[][] visitedSections,
-            final String pathsMask,
-            final int nextPathStep) {
-        visitedSections[x][y] = true;
-
-        int result = 0;
-        switch (direction) {
-            case DOWN_DIRECTION: {
-                final int nextY;
-                if (y < GRID_BOUND_INDEX && canVisit(x, (nextY = y + 1), visitedSections, nextPathStep)) {
-                    result = traversePaths(x, nextY, nextPathStep, visitedSections, pathsMask);
-                }
-                break;
-            }
-            case UP_DIRECTION: {
-                final int nextY;
-                if (y > 0 && y <= GRID_BOUND_INDEX && canVisit(x, (nextY = y - 1), visitedSections, nextPathStep)) {
-                    result = traversePaths(x, nextY, nextPathStep, visitedSections, pathsMask);
-                }
-                break;
-            }
-            case RIGHT_DIRECTION: {
-                final int nextX;
-                if (x < GRID_BOUND_INDEX && canVisit((nextX = x + 1), y, visitedSections, nextPathStep)) {
-                    result = traversePaths(nextX, y, nextPathStep, visitedSections, pathsMask);
-                }
-                break;
-            }
-            case LEFT_DIRECTION: {
-                final int nextX;
-                if (x > 0 && x <= GRID_BOUND_INDEX && canVisit((nextX = x - 1), y, visitedSections, nextPathStep)) {
-                    result = traversePaths(nextX, y, nextPathStep, visitedSections, pathsMask);
-                }
-                break;
-            }
-        }
-
-        visitedSections[x][y] = false;
-        return result;
-    }
-
-    private static boolean isEndReached(final int x, final int y) {
-        return y == GRID_BOUND_INDEX && x == 0;
-    }
-
-    private static boolean canVisit(final int x, final int y, final boolean[][] visitedSections, final int currentPathSection) {
-        if (visitedSections[x][y] || isEndReached(x, y) && currentPathSection != PATH_LENGTH) {
-            return false;
-        }
-
-        return !(x == GRID_BOUND_INDEX && (y > 0 && !visitedSections[x][y - 1] || y == 0 && visitedSections[x][y + 1])
-                || x == 0 && y < GRID_BOUND_INDEX && visitedSections[x][y + 1]
-                || y == 0 && (x > 0 && !visitedSections[x - 1][y])
-                || y > 0 && x == GRID_BOUND_INDEX - 1 && !visitedSections[x + 1][y - 1] && visitedSections[x][y - 1]
-                || y == GRID_BOUND_INDEX && (x < GRID_BOUND_INDEX && !visitedSections[x + 1][y] || x == GRID_BOUND_INDEX && visitedSections[x - 1][y]));
     }
 
     private static String readPathsMask() {
         try (Scanner scanner = new Scanner(System.in)) {
             return scanner.nextLine();
+        }
+    }
+    
+    private static class GridPaths {
+
+        private static final int GRID_BOUND_INDEX = 6;
+        private static final int PATH_LENGTH = 48;
+
+        private static final char RIGHT_DIRECTION = 'R';
+        private static final char LEFT_DIRECTION = 'L';
+        private static final char DOWN_DIRECTION = 'D';
+        private static final char UP_DIRECTION = 'U';
+        private static final char MASK_DIRECTION = '?';
+        
+        private final String pathsMask;
+        private final boolean[][] visitedSections;
+        
+        GridPaths(final String pathsMask) {
+            this.pathsMask = pathsMask;
+            this.visitedSections = new boolean[GRID_BOUND_INDEX + 1][GRID_BOUND_INDEX + 1];
+        }
+        
+        int computePathsCount() {
+            return traversePaths(0, 0, 0);
+        }
+
+        private int traversePaths(
+                final int x,
+                final int y,
+                final int currentPathStep) {
+
+            if (currentPathStep == PATH_LENGTH) {
+                return isEndReached(x, y) ? 1 : 0;
+            }
+
+            final char directionFromMask = pathsMask.charAt(currentPathStep);
+
+            final int nextPathStep = currentPathStep + 1;
+
+            if (directionFromMask != MASK_DIRECTION) {
+                return traverse(x, y, directionFromMask, nextPathStep);
+            } else if (y > 2 && visitedSections[x][y - 2] && !visitedSections[x][y - 1]
+                    && (x > 0 && visitedSections[x - 1][y - 1] || x < GRID_BOUND_INDEX && visitedSections[x + 1][y - 1])) {
+                return traverse(x, y, UP_DIRECTION, nextPathStep);
+            } else if (x > 0 && y < 5 && visitedSections[x][y + 2] && !visitedSections[x][y + 1]
+                    && (visitedSections[x - 1][y + 1] || visitedSections[x + 1][y + 1])){
+                return traverse(x, y, DOWN_DIRECTION, nextPathStep);
+            } else if (y > 0 && x > 2 && visitedSections[x - 2][y] && !visitedSections[x - 1][y] && visitedSections[x - 1][y - 1]) {
+                return traverse(x, y, LEFT_DIRECTION, nextPathStep);
+            } else {
+                return traverse(x, y, RIGHT_DIRECTION, nextPathStep)
+                        + traverse(x, y, LEFT_DIRECTION, nextPathStep)
+                        + traverse(x, y, UP_DIRECTION, nextPathStep)
+                        + traverse(x, y, DOWN_DIRECTION, nextPathStep);
+            }
+        }
+
+        private int traverse(
+                final int x,
+                final int y,
+                final char direction,
+                final int nextPathStep) {
+            visitedSections[x][y] = true;
+
+            int result = 0;
+            switch (direction) {
+            case DOWN_DIRECTION: {
+                final int nextY;
+                if (y < GRID_BOUND_INDEX && canVisit(x, (nextY = y + 1), nextPathStep)) {
+                    result = traversePaths(x, nextY, nextPathStep);
+                }
+                break;
+            }
+            case UP_DIRECTION: {
+                final int nextY;
+                if (y > 0 && y <= GRID_BOUND_INDEX && canVisit(x, (nextY = y - 1), nextPathStep)) {
+                    result = traversePaths(x, nextY, nextPathStep);
+                }
+                break;
+            }
+            case RIGHT_DIRECTION: {
+                final int nextX;
+                if (x < GRID_BOUND_INDEX && canVisit((nextX = x + 1), y, nextPathStep)) {
+                    result = traversePaths(nextX, y, nextPathStep);
+                }
+                break;
+            }
+            case LEFT_DIRECTION: {
+                final int nextX;
+                if (x > 0 && x <= GRID_BOUND_INDEX && canVisit((nextX = x - 1), y, nextPathStep)) {
+                    result = traversePaths(nextX, y, nextPathStep);
+                }
+                break;
+            }
+            }
+
+            visitedSections[x][y] = false;
+            return result;
+        }
+
+        private boolean isEndReached(final int x, final int y) {
+            return y == GRID_BOUND_INDEX && x == 0;
+        }
+
+        private boolean canVisit(final int x, final int y, final int currentPathSection) {
+            if (visitedSections[x][y] || isEndReached(x, y) && currentPathSection != PATH_LENGTH) {
+                return false;
+            }
+
+            return !(x == GRID_BOUND_INDEX && (y > 0 && !visitedSections[x][y - 1] || y == 0 && visitedSections[x][y + 1])
+                    || x == 0 && y < GRID_BOUND_INDEX && visitedSections[x][y + 1]
+                    || y == 0 && (x > 0 && !visitedSections[x - 1][y])
+                    || y > 0 && x == GRID_BOUND_INDEX - 1 && !visitedSections[x + 1][y - 1] && visitedSections[x][y - 1]
+                    || y == GRID_BOUND_INDEX && (x < GRID_BOUND_INDEX && !visitedSections[x + 1][y] || x == GRID_BOUND_INDEX && visitedSections[x - 1][y]));
         }
     }
 }

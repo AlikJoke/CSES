@@ -42,8 +42,11 @@ public class Main {
 
     public static void main(String[] args) {
         final int n = readInputNumber();
-        final String result = computeSetsInStringRepresentation(n);
-        System.out.println(result == null ? NO_ANSWER : result);
+
+        final TwoSets algorithm = new TwoSets(n);
+        final int[][] twoSets = algorithm.computeSets();
+
+        System.out.println(twoSets == null ? NO_ANSWER : createOutputString(twoSets, n));
     }
 
     private static int readInputNumber() {
@@ -52,52 +55,39 @@ public class Main {
         }
     }
 
-    private static String computeSetsInStringRepresentation(final int n) {
+    private static String createOutputString(final int[][] twoSets, final int fullSetSize) {
 
-        final long seriesSum = (long) n * (n + 1) / 2;
-        if (seriesSum % 2 == 1) {
-            return null;
-        }
+        final int[] firstSet = twoSets[0];
+        final int[] secondSet = twoSets[1];
 
-        final int[] firstSet = new int[n];
-        final int[] secondSet = new int[n];
+        final StringBuilder sb = new StringBuilder(fullSetSize * 100);
 
-        for (int i = 0; i < n; i++) {
-            secondSet[i] = i + 1;
-        }
-
-        long requiredSumOfNumbersInOneSet = seriesSum / 2;
         int firstSetSize = 0;
-        for (int i = 0; i < n && requiredSumOfNumbersInOneSet > 0; i++, firstSetSize++) {
-            final int currentNumber = (int) Math.min(requiredSumOfNumbersInOneSet, n - i);
+        for (int number : firstSet) {
+            if (number == 0) {
+                continue;
+            }
 
-            firstSet[i] = currentNumber;
-            secondSet[currentNumber - 1] = 0;
-
-            requiredSumOfNumbersInOneSet = requiredSumOfNumbersInOneSet - currentNumber;
+            firstSetSize++;
         }
-
-        return createOutputString(firstSet, secondSet, firstSetSize);
-    }
-
-    private static String createOutputString(final int[] firstSet, final int[] secondSet, final int firstSetSize) {
-
-        final int n = firstSet.length;
-        final StringBuilder sb = new StringBuilder(n * 100);
 
         sb.append(YES_ANSWER)
                 .append(System.lineSeparator())
                 .append(firstSetSize)
                 .append(System.lineSeparator());
 
-        for (int i = 0; i < firstSetSize; i++) {
-            sb.append(firstSet[i]).append(' ');
+        for (int number : firstSet) {
+            if (number == 0) {
+                continue;
+            }
+
+            sb.append(number).append(' ');
         }
 
         sb.append(System.lineSeparator())
-                .append(n - firstSetSize)
+                .append(fullSetSize - firstSetSize)
                 .append(System.lineSeparator());
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < fullSetSize; i++) {
             if (secondSet[i] == 0) {
                 continue;
             }
@@ -106,5 +96,42 @@ public class Main {
         }
 
         return sb.toString();
+    }
+
+    private static class TwoSets {
+
+        private final int n;
+
+        TwoSets(final int n) {
+            this.n = n;
+        }
+
+        int[][] computeSets() {
+
+            final long seriesSum = (long) this.n * (this.n + 1) / 2;
+            if (seriesSum % 2 == 1) {
+                return null;
+            }
+
+            final int[] firstSet = new int[this.n];
+            final int[] secondSet = new int[this.n];
+
+            for (int i = 0; i < this.n; i++) {
+                secondSet[i] = i + 1;
+            }
+
+            long requiredSumOfNumbersInOneSet = seriesSum / 2;
+            int firstSetSize = 0;
+            for (int i = 0; i < this.n && requiredSumOfNumbersInOneSet > 0; i++, firstSetSize++) {
+                final int currentNumber = (int) Math.min(requiredSumOfNumbersInOneSet, this.n - i);
+
+                firstSet[i] = currentNumber;
+                secondSet[currentNumber - 1] = 0;
+
+                requiredSumOfNumbersInOneSet = requiredSumOfNumbersInOneSet - currentNumber;
+            }
+
+            return new int[][] { firstSet, secondSet};
+        }
     }
 }
