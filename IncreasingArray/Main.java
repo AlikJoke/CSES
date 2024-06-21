@@ -5,13 +5,13 @@ import java.util.StringTokenizer;
 
 /**
  * <h1>Increasing Array</h1><br/>
- * Given an array of {@literal n} integers. Modify the array so that it is increasing, i.e., every element is
+ * Given an array of {@code n} integers. Modify the array so that it is increasing, i.e., every element is
  * at least as large as the previous element.<br/>
  * On each move, you may increase the value of any element by one. What is the minimum number of moves required?<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The first input line contains an integer {@literal n}: the size of the array.<br/>
- * The second line contains {@literal n} integers {@literal x_1},{@literal x_2},...,{@literal x_n}: the contents of the array.<br/>
+ * The first input line contains an integer {@code n}: the size of the array.<br/>
+ * The second line contains {@code n} integers {@code x_1},{@code x_2},...,{@code x_n}: the contents of the array.<br/>
  * <i><b>Output</b></i>:<br/>
  * Print the minimum number of moves.<br/>
  * <i><b>Constraints</b></i>:<br/>
@@ -30,7 +30,7 @@ import java.util.StringTokenizer;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        final int[] sourceArray = readArray();
+        final int[] sourceArray = readSourceArray();
         final long summaryIncreasingCount = computeSummaryIncreasingStepsCount(sourceArray);
 
         System.out.print(summaryIncreasingCount);
@@ -52,7 +52,7 @@ public class Main {
         return summaryIncreasingCount;
     }
 
-    private static int[] readArray() throws Exception {
+    private static int[] readSourceArray() throws Exception {
         try (ConsoleReader reader = new ConsoleReader(" ")) {
             final int length = reader.nextInt();
 

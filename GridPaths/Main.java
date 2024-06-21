@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 /**
  * <h1>Grid Paths</h1><br/>
- * There are {@literal 88418} paths in a {@literal 7*7} grid from the upper-left square to the lower-left square.
+ * There are {@literal 88418} paths in a {@literal 7x7} grid from the upper-left square to the lower-left square.
  * Each path corresponds to a 48-character description consisting of characters {@literal D} (down), {@literal U} (up),
  * {@literal L} (left) and {@literal R} (right).<br/>
  * For example, the path<br/>

@@ -2,11 +2,11 @@ import java.util.Scanner;
 
 /**
  * <h1>Distinct Numbers</h1><br/>
- * Given a list of {@literal n} integers, and your task is to calculate the number of distinct values in the list.<br/><br/>
+ * Given a list of {@code n} integers, and your task is to calculate the number of distinct values in the list.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The first input line has an integer {@literal n}: the number of values.<br/>
- * The second line has {@literal n} integers {@literal x_1},{@literal x_2},...,{@literal x_n}.<br/>
+ * The first input line has an integer {@code n}: the number of values.<br/>
+ * The second line has {@code n} integers {@code x_1},{@code x_2},...,{@code x_n}.<br/>
  * <i><b>Output</b></i>:<br/>
  * Print one integers: the number of distinct values.<br/>
  * <i><b>Constraints</b></i>:<br/>

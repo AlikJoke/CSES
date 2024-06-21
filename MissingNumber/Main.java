@@ -5,11 +5,11 @@ import java.util.StringTokenizer;
 
 /**
  * <h1>Missing number</h1><br/>
- * Given all numbers between {@literal 1,2,...,n} except one. Task is to find the missing number.<br/><br/>
+ * Given all numbers between {@code 1,2,...,n} except one. Task is to find the missing number.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
  * The first input line contains an integer {@code n}.<br/>
- * The second line contains {@literal n-1} numbers. Each number is distinct and between {@literal 1} and {@literal n} (inclusive).<br/>
+ * The second line contains {@code n-1} numbers. Each number is distinct and between {@code 1} and {@code n} (inclusive).<br/>
  * <i><b>Output</b></i>:<br/>
  * Print the missing number.<br/>
  * <i><b>Constraints</b></i>:<br/>

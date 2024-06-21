@@ -2,13 +2,13 @@ import java.util.Scanner;
 
 /**
  * <h1>Two Knights</h1><br/>
- * Task is to count for {@literal k=1,2,...,n} the number of ways two knights can be placed on a {@code k * k} chessboard
+ * Task is to count for {@code k=1,2,...,n} the number of ways two knights can be placed on a {@literal k x k} chessboard
  * so that they do not attack each other.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * TThe only input line contains an integer {@literal n}.<br/>
+ * TThe only input line contains an integer {@code n}.<br/>
  * <i><b>Output</b></i>:<br/>
- * Print {@literal n} integers: the results.<br/>
+ * Print {@code n} integers: the results.<br/>
  * <i><b>Constraints</b></i>:<br/>
  * {@code 1 <= n <= 10_000}<br/>
  *
@@ -36,22 +36,26 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        final short chessbordSize = readChessbordSize();
+
+        for (short i = 1; i <= chessbordSize; i++) {
+            final int firstKnightAllPositions = i * i;
+            final int secondKnightAllPositions = firstKnightAllPositions - 1;
+
+            final long allKnightsPositions = (long) firstKnightAllPositions * secondKnightAllPositions / 2;
+            final int attackPositionsByOneKnight = 2 * (i - 1) * (i - 2);
+            final int attackPositionsByKnights = attackPositionsByOneKnight * 2;
+
+            final long resultPositions = allKnightsPositions - attackPositionsByKnights;
+
+            System.out.println(resultPositions);
+        }
+    }
+}
+
+    private static short readChessbordSize() {
         try (Scanner scanner = new Scanner(System.in)) {
-
-            short n = scanner.nextShort();
-
-            for (short i = 1; i <= n; i++) {
-                final int firstKnightAllPositions = i * i;
-                final int secondKnightAllPositions = firstKnightAllPositions - 1;
-
-                final long allKnightsPositions = (long) firstKnightAllPositions * secondKnightAllPositions / 2;
-                final int attackPositionsByOneKnight = 2 * (i - 1) * (i - 2);
-                final int attackPositionsByKnights = attackPositionsByOneKnight * 2;
-
-                final long resultPositions = allKnightsPositions - attackPositionsByKnights;
-
-                System.out.println(resultPositions);
-            }
+            return scanner.nextShort();
         }
     }
 }

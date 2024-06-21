@@ -6,11 +6,11 @@ import java.io.InputStreamReader;
  * <h1>Digit Queries</h1><br/>
  * Consider an infinite string that consists of all positive integers in increasing order:<br/>
  * {@literal 12345678910111213141516171819202122232425...}.</br>
- * Task is to process {@literal q} queries of the form: what is the digit at position {@literal k} in the string?<br/><br/>
+ * Task is to process {@code q} queries of the form: what is the digit at position {@code k} in the string?<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The first input line has an integer {@literal q}: the number of queries.<br/>
- * After this, there are {@literal q} lines that describe the queries. Each line has an integer {@literal k}:
+ * The first input line has an integer {@code q}: the number of queries.<br/>
+ * After this, there are {@code q} lines that describe the queries. Each line has an integer {@code k}:
  * a {@literal 1}-indexed position in the string.<br/>
  * <i><b>Output</b></i>:<br/>
  * For each query, print the corresponding digit.<br/>

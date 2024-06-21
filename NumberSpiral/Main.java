@@ -8,13 +8,13 @@ import java.util.StringTokenizer;
  * A number spiral is an infinite grid whose upper-left square has number {@literal 1}.
  * Here are the first five layers of the spiral:<br/>
  * <img src="https://cses.fi/file/bba36f2601b99c7edc15865aa2a49e680a271075f30e86aa0e4e18d00a779c21"/><br/>
- * Task is to find out the number in row {@literal y} and column {@literal x}.<br/><br/>
+ * Task is to find out the number in row {@code y} and column {@code x}.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The first input line contains an integer {@literal t}: the number of tests.<br/>
- * After this, there are {@literal t} lines, each containing integers {@literal y} and {@literal x}.<br/>
+ * The first input line contains an integer {@code t}: the number of tests.<br/>
+ * After this, there are {@code t} lines, each containing integers {@code y} and {@code x}.<br/>
  * <i><b>Output</b></i>:<br/>
- * For each test, print the number in row {@literal y} and column {@literal x}.<br/>
+ * For each test, print the number in row {@code y} and column {@code x}.<br/>
  * <i><b>Constraints</b></i>:<br/>
  * {@code 1 <= t <= 10^5}<br/>
  * {@code 1 <= y, x <= 10^9}<br/><br/>

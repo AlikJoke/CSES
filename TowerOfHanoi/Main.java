@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 /**
  * <h1>Tower of Hanoi</h1><br/>
- * The Tower of Hanoi game consists of three stacks (left, middle and right) and {@literal n} round disks of
+ * The Tower of Hanoi game consists of three stacks (left, middle and right) and {@code n} round disks of
  * different sizes. Initially, the left stack has all the disks, in increasing order of size from top to bottom.<br/>
  * The goal is to move all the disks to the right stack using the middle stack. On each move you can move
  * the uppermost disk from a stack to another stack. In addition, it is not allowed to place a larger disk
@@ -10,11 +10,11 @@ import java.util.Scanner;
  * Task is to find a solution that minimizes the number of moves.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The only input line has an integer {@literal n}: the number of disks.<br/>
+ * The only input line has an integer {@code n}: the number of disks.<br/>
  * <i><b>Output</b></i>:<br/>
- * First print an integer {@literal k}: the minimum number of moves.<br/>
- * After this, print {@literal k} lines that describe the moves. Each line has two integers {@literal a} and {@literal b}:
- * move a disk from stack {@literal a} to stack {@literal b}.
+ * First print an integer {@code k}: the minimum number of moves.<br/>
+ * After this, print {@code k} lines that describe the moves. Each line has two integers {@code a} and {@code b}:
+ * move a disk from stack {@code a} to stack {@code b}.
  * <i><b>Constraints</b></i>:<br/>
  * {@code 1 <= n <= 16}<br/>
  *
@@ -52,6 +52,7 @@ public class Main {
             return scanner.nextInt();
         }
     }
+
     private static int power(final int base, final int degree) {
         return degree == 0 ? 1 : base * power(base, degree - 1);
     }

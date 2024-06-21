@@ -2,12 +2,12 @@ import java.util.Scanner;
 
 /**
  * <h1>Gray Code</h1><br/>
- * A Gray code is a list of all {@code 2^n} bit strings of length {@literal n}, where any two successive strings differ in
+ * A Gray code is a list of all {@code 2^n} bit strings of length {@code n}, where any two successive strings differ in
  * exactly one bit (i.e., their Hamming distance is one).<br/>
- * Task is to create a Gray code for a given length {@literal n}.<br/><br/>
+ * Task is to create a Gray code for a given length {@code n}.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The first input line has an integer {@literal n}.<br/>
+ * The first input line has an integer {@code n}.<br/>
  * <i><b>Output</b></i>:<br/>
  * Print {@code 2^n} lines that describe the Gray code. Print any valid solution.<br/>
  * <i><b>Constraints</b></i>:<br/>
@@ -27,11 +27,15 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            final int bitStringsLength = scanner.nextInt();
-            final String result = computeResult(bitStringsLength);
+        final int bitStringsLength = readBitStringsLength();
+        final String result = computeResult(bitStringsLength);
 
-            System.out.println(result);
+        System.out.println(result);
+    }
+
+    private static int readBitStringsLength() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            return scanner.nextInt();
         }
     }
 

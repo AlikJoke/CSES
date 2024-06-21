@@ -6,7 +6,7 @@ import java.util.Scanner;
  * (i.e., it reads the same forwards and backwards).<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The only input line has a string of length {@literal n} consisting of characters {@literal A–Z}.<br/>
+ * The only input line has a string of length {@code n} consisting of characters {@literal A–Z}.<br/>
  * <i><b>Output</b></i>:<br/>
  * Print a palindrome consisting of the characters of the original string. Print any valid solution.
  * If there are no solutions, print {@literal NO SOLUTION}.<br/>
@@ -26,11 +26,15 @@ public class Main {
     private static final String NO_SOLUTION = "NO SOLUTION";
 
     public static void main(String[] args) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            final String inputSymbolsSequence = scanner.nextLine();
-            final String palindrome = computePalindrome(inputSymbolsSequence);
+        final String inputSymbolsSequence = readInputSymbolsSequence();
+        final String palindrome = computePalindrome(inputSymbolsSequence);
 
-            System.out.print(palindrome == null ? NO_SOLUTION : palindrome);
+        System.out.print(palindrome == null ? NO_SOLUTION : palindrome);
+    }
+
+    private static String readInputSymbolsSequence() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            return scanner.nextLine();
         }
     }
 

@@ -2,12 +2,12 @@ import java.util.Scanner;
 
 /**
  * <h1>Apple Division</h1><br/>
- * There are {@literal n} apples with known weights. Task is to divide the apples into two
+ * There are {@code n} apples with known weights. Task is to divide the apples into two
  * groups so that the difference between the weights of the groups is minimal.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The first input line has an integer {@literal n}: the number of apples.<br/>
- * The next line has {@literal n} integers {@literal p_1},{@literal p_2},...,{@literal p_n}:
+ * The first input line has an integer {@code n}: the number of apples.<br/>
+ * The next line has {@code n} integers {@code p_1},{@code p_2},...,{@code p_n}:
  * the weight of each apple.<br/>
  *
  * <i><b>Output</b></i>:<br/>

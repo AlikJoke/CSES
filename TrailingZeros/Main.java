@@ -2,13 +2,13 @@ import java.util.Scanner;
 
 /**
  * <h1>Trailing Zeros</h1><br/>
- * Task is to calculate the number of trailing zeros in the factorial {@literal n!}.<br/>
- * For example, {@literal 20!=2432902008176640000} and it has {@literal 4} trailing zeros.<br/><br/>
+ * Task is to calculate the number of trailing zeros in the factorial {@code n!}.<br/>
+ * For example, {@code 20!=2432902008176640000} and it has {@literal 4} trailing zeros.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The only input line has an integer {@literal n}.<br/>
+ * The only input line has an integer {@code n}.<br/>
  * <i><b>Output</b></i>:<br/>
- * Print the number of trailing zeros in {@literal n!}.<br/>
+ * Print the number of trailing zeros in {@code n!}.<br/>
  * <i><b>Constraints</b></i>:<br/>
  * {@code 1 <= n <= 10^9}<br/>
  *
@@ -27,11 +27,15 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            final int n = scanner.nextInt();
-            final int result = computeCountOfTrailingZeros(n);
+        final int n = readInputNumber();
+        final int result = computeCountOfTrailingZeros(n);
 
-            System.out.print(result);
+        System.out.print(result);
+    }
+
+    private static int readInputNumber() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            return scanner.nextInt();
         }
     }
 

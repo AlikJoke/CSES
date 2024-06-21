@@ -2,14 +2,14 @@ import java.util.Scanner;
 
 /**
  * <h1>Permutations</h1><br/>
- * A permutation of integers {@literal 1},{@literal 2},...,{@literal n} is called <i>beautiful</i> if there are no
+ * A permutation of integers {@code 1, 2, ..., n} is called <i>beautiful</i> if there are no
  * adjacent elements whose difference is {@literal 1}.<br/>
- * Given {@literal n}, construct a beautiful permutation if such a permutation exists.<br/><br/>
+ * Given {@code n}, construct a beautiful permutation if such a permutation exists.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The only input line contains an integer {@literal n}.<br/>
+ * The only input line contains an integer {@code n}.<br/>
  * <i><b>Output</b></i>:<br/>
- * Print a beautiful permutation of {@literal 1},{@literal 2},...,{@literal n}. If there are several solutions,
+ * Print a beautiful permutation of {@code 1, 2, ..., n}. If there are several solutions,
  * print any of them. If there are no solutions, print {@literal NO SOLUTION}.<br/>
  * <i><b>Constraints</b></i>:<br/>
  * {@code 1 <= n <= 10^6}<br/><br/>
@@ -36,11 +36,15 @@ public class Main {
     private static final String NO_SOLUTION = "NO SOLUTION";
 
     public static void main(String[] args) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            final int sequenceLength = scanner.nextInt();
-            final String outputSequence = computeBeautifulSequenceString(sequenceLength);
+        final int sequenceLength = readSequenceLength();
+        final String outputSequence = computeBeautifulSequenceString(sequenceLength);
 
-            System.out.print(outputSequence);
+        System.out.print(outputSequence);
+    }
+
+    private static int readSequenceLength() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            return scanner.nextInt();
         }
     }
 

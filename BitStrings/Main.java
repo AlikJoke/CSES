@@ -2,12 +2,12 @@ import java.util.Scanner;
 
 /**
  * <h1>Bit Strings</h1><br/>
- * Task is to calculate the number of bit strings of length {@literal n}.
+ * Task is to calculate the number of bit strings of length {@code n}.
  * For example, if {@code n=3}, the correct answer is {@literal 8}, because the possible bit strings are {@literal 000},
  * {@literal 001}, {@literal 010}, {@literal 011}, {@literal 100}, {@literal 101}, {@literal 110}, and {@literal 111}.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The only input line has an integer {@literal n}.<br/>
+ * The only input line has an integer {@code n}.<br/>
  * <i><b>Output</b></i>:<br/>
  * Print the result modulo {@code 10^9+7}.<br/>
  * <i><b>Constraints</b></i>:<br/>
@@ -33,15 +33,19 @@ public class Main {
     private static final int MODULO = 1_000_000_000 + 7;
 
     public static void main(String[] args) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            final int length = scanner.nextInt();
-            final long result = computeResult(length);
+        final int length = readBitStringsLength();
+        final long result = computeResult(length);
 
-            System.out.println(result);
-            /*
-             * Implementation via BigInteger:
-             * System.out.println(BigInteger.valueOf(2).pow(length).mod(BigInteger.valueOf(MODULO)).longValue());
-             */
+        System.out.println(result);
+        /*
+         * Implementation via BigInteger:
+         * System.out.println(BigInteger.valueOf(2).pow(length).mod(BigInteger.valueOf(MODULO)).longValue());
+         */
+    }
+
+    private static int readBitStringsLength() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            return scanner.nextInt();
         }
     }
 

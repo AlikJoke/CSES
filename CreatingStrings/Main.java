@@ -5,9 +5,9 @@ import java.util.Scanner;
  * Given a string, task is to generate all different strings that can be created using its characters.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The only input line has a string of length {@literal n}. Each character is between {@literal a}–{@literal z}.<br/>
+ * The only input line has a string of length {@code n}. Each character is between {@literal a}–{@literal z}.<br/>
  * <i><b>Output</b></i>:<br/>
- * First print an integer {@literal k}: the number of strings. Then print {@literal k} lines: the strings in alphabetical order.<br/>
+ * First print an integer {@code k}: the number of strings. Then print {@code k} lines: the strings in alphabetical order.<br/>
  * <i><b>Constraints</b></i>:<br/>
  * {@code 1 <= n <= 8}<br/>
  *
@@ -35,14 +35,18 @@ public class Main {
     private static final char LAST_ALPHABET_SYMBOL = 'z';
 
     public static void main(String[] args) {
+        final String string = readInputSourceString();
+
+        final StringBuilder outputAcc = createOutputAccumulator(string.length());
+        final int realCountOfStrings = generateAllStrings(string, outputAcc);
+
+        System.out.println(realCountOfStrings);
+        System.out.println(outputAcc);
+    }
+
+    private static String readInputSourceString() {
         try (Scanner scanner = new Scanner(System.in)) {
-            final String string = scanner.nextLine();
-
-            final StringBuilder outputAcc = createOutputAccumulator(string.length());
-            final int realCountOfStrings = generateAllStrings(string, outputAcc);
-
-            System.out.println(realCountOfStrings);
-            System.out.println(outputAcc);
+            return scanner.nextLine();
         }
     }
 

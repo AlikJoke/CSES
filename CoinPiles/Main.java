@@ -5,14 +5,14 @@ import java.util.StringTokenizer;
 
 /**
  * <h1>Coin Piles</h1><br/>
- * You have two coin piles containing {@literal a} and {@literal b} coins. On each move, you can either remove
+ * You have two coin piles containing {@code a} and {@code b} coins. On each move, you can either remove
  * one coin from the left pile and two coins from the right pile, or two coins from the left pile and one coin
  * from the right pile.<br/>
  * Task is to efficiently find out if you can empty both the piles.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The first input line contains an integer {@literal t}: the number of tests.<br/>
- * After this, there are {@literal t} lines, each of which has two integers {@literal a} and {@literal b}:
+ * The first input line contains an integer {@code t}: the number of tests.<br/>
+ * After this, there are {@code t} lines, each of which has two integers {@code a} and {@code b}:
  * the numbers of coins in the piles.<br/>
  * <i><b>Output</b></i>:<br/>
  * For each test, print {@literal YES} if you can empty the piles and {@literal NO} otherwise.<br/>

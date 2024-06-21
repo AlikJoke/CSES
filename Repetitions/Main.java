@@ -6,7 +6,7 @@ import java.util.Scanner;
  * Task is to find the longest repetition in the sequence. This is a maximum-length substring containing only one type of character.<br/><br/>
  *
  * <i><b>Input</b></i>:<br/>
- * The only input line contains a string of {@literal n} characters.<br/>
+ * The only input line contains a string of {@code n} characters.<br/>
  * <i><b>Output</b></i>:<br/>
  * Print one integer: the length of the longest repetition.<br/>
  * <i><b>Constraints</b></i>:<br/>
@@ -23,10 +23,14 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        final String dnaSequence = readDNASequence();
+        final int maxSequenceLengthOfAnyNucleotide = computeMaxSequenceLengthOfAnyNucleotide(dnaSequence);
+        System.out.print(maxSequenceLengthOfAnyNucleotide);
+    }
+
+    private static String readDNASequence() {
         try (Scanner scanner = new Scanner(System.in)) {
-            final String dnaSequence = scanner.nextLine();
-            final int maxSequenceLengthOfAnyNucleotide = computeMaxSequenceLengthOfAnyNucleotide(dnaSequence);
-            System.out.print(maxSequenceLengthOfAnyNucleotide);
+            return scanner.nextLine();
         }
     }
 
