@@ -38,13 +38,13 @@ import java.util.StringTokenizer;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        final Apartments apartments = readApartmentsInfo();
-        final int numberOfServedApplicants = apartments.computeNumberOfServedApplicants();
+        final Apartments algorithm = readInputData();
+        final int numberOfServedApplicants = algorithm.computeNumberOfServedApplicants();
 
         System.out.println(numberOfServedApplicants);
     }
 
-    private static Apartments readApartmentsInfo() throws Exception {
+    private static Apartments readInputData() throws Exception {
         try (ConsoleReader reader = new ConsoleReader(" ")) {
             final int applicantsCount = reader.nextInt();
             final int apartmentsCount = reader.nextInt();
