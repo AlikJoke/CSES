@@ -75,18 +75,18 @@ public class Main {
         }
 
         private void quickSort(final int[] a, final int leftBound, final int rightBound) {
-            final int median = a[leftBound + ((rightBound - leftBound) >> 1)];
+            final int auxiliaryItem = a[leftBound + ((rightBound - leftBound) >> 1)];
 
             int i = leftBound;
             int j = rightBound;
 
             while (i <= j) {
 
-                while (a[i] < median) {
+                while (a[i] < auxiliaryItem) {
                     i++;
                 }
 
-                while (a[j] > median) {
+                while (a[j] > auxiliaryItem) {
                     j--;
                 }
 

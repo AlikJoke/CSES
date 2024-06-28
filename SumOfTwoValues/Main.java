@@ -114,19 +114,19 @@ public class Main {
         }
 
         private void quickSort(final Item[] a, final int leftBound, final int rightBound) {
-            final Item medianItem = a[leftBound == rightBound ? leftBound : random.nextInt(leftBound, rightBound)];
-            final int medianValue = medianItem.value;
+            final Item auxiliaryItem = a[leftBound == rightBound ? leftBound : random.nextInt(leftBound, rightBound)];
+            final int auxiliaryItemValue = auxiliaryItem.value;
 
             int i = leftBound;
             int j = rightBound;
 
             while (i <= j) {
 
-                while (a[i].value < medianValue) {
+                while (a[i].value < auxiliaryItemValue) {
                     i++;
                 }
 
-                while (a[j].value > medianValue) {
+                while (a[j].value > auxiliaryItemValue) {
                     j--;
                 }
 

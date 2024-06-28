@@ -83,18 +83,18 @@ public class Main {
         }
 
         private void quickSort(final RestaurantCustomers.VisitTime[] visitTimes, final int leftBound, final int rightBound) {
-            final RestaurantCustomers.VisitTime median = visitTimes[leftBound == rightBound ? leftBound : random.nextInt(leftBound, rightBound)];
+            final RestaurantCustomers.VisitTime auxiliaryItem = visitTimes[leftBound == rightBound ? leftBound : random.nextInt(leftBound, rightBound)];
 
             int i = leftBound;
             int j = rightBound;
 
             while (i <= j) {
 
-                while (visitTimes[i].time < median.time) {
+                while (visitTimes[i].time < auxiliaryItem.time) {
                     i++;
                 }
 
-                while (visitTimes[j].time > median.time) {
+                while (visitTimes[j].time > auxiliaryItem.time) {
                     j--;
                 }
 

@@ -85,18 +85,18 @@ public class Main {
         }
 
         private void quickSort(final MovieFestival.MovieTime[] movieTimes, final int leftBound, final int rightBound) {
-            final MovieFestival.MovieTime median = movieTimes[leftBound == rightBound ? leftBound : random.nextInt(leftBound, rightBound)];
+            final MovieFestival.MovieTime auxiliaryItem = movieTimes[leftBound == rightBound ? leftBound : random.nextInt(leftBound, rightBound)];
 
             int i = leftBound;
             int j = rightBound;
 
             while (i <= j) {
 
-                while (movieTimes[i].time < median.time || movieTimes[i].time == median.time && !median.finishTime && movieTimes[i].finishTime) {
+                while (movieTimes[i].time < auxiliaryItem.time || movieTimes[i].time == auxiliaryItem.time && !auxiliaryItem.finishTime && movieTimes[i].finishTime) {
                     i++;
                 }
 
-                while (movieTimes[j].time > median.time || movieTimes[j].time == median.time && median.finishTime && !movieTimes[j].finishTime) {
+                while (movieTimes[j].time > auxiliaryItem.time || movieTimes[j].time == auxiliaryItem.time && auxiliaryItem.finishTime && !movieTimes[j].finishTime) {
                     j--;
                 }
 

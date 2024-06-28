@@ -105,18 +105,18 @@ public class Main {
         }
 
         private void quickSort(final int[] a, final int leftBound, final int rightBound) {
-            final int median = a[leftBound == rightBound ? leftBound : random.nextInt(leftBound, rightBound)];
+            final int auxiliaryItem = a[leftBound == rightBound ? leftBound : random.nextInt(leftBound, rightBound)];
 
             int i = leftBound;
             int j = rightBound;
 
             while (i <= j) {
 
-                while (a[i] < median) {
+                while (a[i] < auxiliaryItem) {
                     i++;
                 }
 
-                while (a[j] > median) {
+                while (a[j] > auxiliaryItem) {
                     j--;
                 }
 
