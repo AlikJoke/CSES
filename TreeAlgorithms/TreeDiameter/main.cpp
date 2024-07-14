@@ -30,7 +30,7 @@ using namespace std;
  */
 class TreeDiameter {
     public:
-        TreeDiameter(std::vector<std::vector<int>>& adj) : adj(adj), onPath(adj.size(), 0) {}
+        TreeDiameter(vector<vector<int>>& adj) : adj(adj), onPath(adj.size(), 0) {}
     
         int computeDiameter() {
             if (adj[0].empty()) {
@@ -39,7 +39,7 @@ class TreeDiameter {
     
             dfs(0, 1);
     
-            std::pair<int, int> farthestFromRootNodeData = findFarthestNodeIndex();
+            pair<int, int> farthestFromRootNodeData = findFarthestNodeIndex();
     
             dfs(farthestFromRootNodeData.first, 1);
     
@@ -47,13 +47,13 @@ class TreeDiameter {
         }
     
     private:
-        std::vector<std::vector<int>>& adj;
-        std::vector<int> onPath;
+        vector<vector<int>>& adj;
+        vector<int> onPath;
     
-        std::pair<int, int> findFarthestNodeIndex() {
+        pair<int, int> findFarthestNodeIndex() {
             int maxPathLength = 0;
             int farthestFromRootNodeIndex = 0;
-            for (int i = 0; i < onPath.size(); ++i) {
+            for (unsigned int i = 0; i < onPath.size(); ++i) {
                 if (maxPathLength < onPath[i]) {
                     maxPathLength = onPath[i];
                     farthestFromRootNodeIndex = i;
@@ -62,7 +62,7 @@ class TreeDiameter {
                 onPath[i] = 0;
             }
     
-            return std::make_pair(farthestFromRootNodeIndex, maxPathLength - 1);
+            return make_pair(farthestFromRootNodeIndex, maxPathLength - 1);
         }
     
         void dfs(int currentNode, int level) {
@@ -81,13 +81,13 @@ class TreeDiameter {
 int main()
 {
     int nodesCount;
-    std::cin >> nodesCount;
+    cin >> nodesCount;
     
-    std::vector<std::vector<int>> adj(nodesCount);
+    vector<vector<int>> adj(nodesCount);
     for (int i = 1; i < nodesCount; ++i) {
         int node;
         int linkedNode;
-        std:cin >> node >> linkedNode;
+        cin >> node >> linkedNode;
         
         adj[node - 1].push_back(linkedNode - 1);
         adj[linkedNode - 1].push_back(node - 1);
@@ -96,7 +96,7 @@ int main()
     TreeDiameter algorithm(adj);
     int diameter = algorithm.computeDiameter();
 
-    std::cout << diameter << std::endl;
+    cout << diameter << endl;
 
     return 0;
 }

@@ -1,8 +1,6 @@
 #include <vector>
 #include <iostream>
-using namespace std;
-
-#include <vector>
+using std::vector;
 
 /**
  * Subordinates.
@@ -32,36 +30,42 @@ class Tree {
     class Node {
         public:
             int id;
-            std::vector<Node*> children;
+            vector<Node*> children;
             
             Node(int id) : id(id) {}
     
-            std::vector<Node*>& getChildren() {
+            vector<Node*>& getChildren() {
                 return children;
             }
     };
     
-public:
-    Tree(int employeeCount) : nodes(employeeCount) {
-        nodes[0] = new Node(0);
-    }
+    public:
+        Tree(int employeeCount) : nodes(employeeCount) {
+            nodes[0] = new Node(0);
+        }
 
-    void addNode(int i, int parentId) {
-        Node* node = findOrCreateNode(i);
-        Node* parent = findOrCreateNode(parentId);
-        parent->children.push_back(node);
-    }
+        void addNode(int i, int parentId) {
+            Node* node = findOrCreateNode(i);
+            Node* parent = findOrCreateNode(parentId);
+            parent->children.push_back(node);
+        }
 
-    std::vector<int> countNestedChildren() {
-        std::vector<int> result(nodes.size(), 0);
-        countNestedChildren(nodes[0], result);
-        return result;
-    }
+        vector<int> countNestedChildren() {
+            vector<int> result(nodes.size(), 0);
+            countNestedChildren(nodes[0], result);
+            return result;
+        }
+
+        ~Tree() {
+            for (auto x : nodes) {
+                delete x;
+            }
+        }
 
     private:
-        std::vector<Node*> nodes;
+        vector<Node*> nodes;
 
-        int countNestedChildren(Node* startNode, std::vector<int>& counts) {
+        int countNestedChildren(Node* startNode, vector<int>& counts) {
             if (startNode->children.empty()) {
                 counts[startNode->id] = 0;
                 return 0;
@@ -85,15 +89,15 @@ public:
 };
 
 class Subordinates {
-public:
-    Subordinates(Tree& tree) : tree(tree) {}
+    public:
+        Subordinates(Tree& tree) : tree(tree) {}
 
-    vector<int> computeSubordinates() {
-        return tree.countNestedChildren();
-    }
+        vector<int> computeSubordinates() {
+            return tree.countNestedChildren();
+        }
 
-private:
-    Tree& tree;
+    private:
+        Tree& tree;
 };
 
 int main()
@@ -104,7 +108,7 @@ int main()
     Tree* tree = new Tree(employeeCount);
     for (int i = 1; i < employeeCount; ++i) {
         int parent;
-        std:cin >> parent;
+        std::cin >> parent;
         tree->addNode(i, parent - 1);
     }
  
@@ -114,6 +118,9 @@ int main()
     for (int i = 0; i < employeeCount; i++) {
         std::cout << result[i] << ' ';
     }
+
+    delete algorithm;
+    delete tree;
 
     return 0;
 }
