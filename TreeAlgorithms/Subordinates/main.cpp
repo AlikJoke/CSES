@@ -90,37 +90,48 @@ class Tree {
 
 class Subordinates {
     public:
-        Subordinates(Tree& tree) : tree(tree) {}
+        Subordinates(Tree* tree) : tree(tree) {}
 
         vector<int> computeSubordinates() {
-            return tree.countNestedChildren();
+            return tree->countNestedChildren();
+        }
+
+        ~Subordinates() {
+            delete tree;
         }
 
     private:
-        Tree& tree;
+        Tree* tree;
 };
 
-int main()
-{
+void writeOutputResult(vector<int> result) {
+    for (auto x : result) {
+        std::cout << x << ' ';
+    }
+}
+
+Subordinates* createAlgorithm() {
     int employeeCount;
     std::cin >> employeeCount;
-    
+
     Tree* tree = new Tree(employeeCount);
     for (int i = 1; i < employeeCount; ++i) {
         int parent;
         std::cin >> parent;
         tree->addNode(i, parent - 1);
     }
- 
-    Subordinates* algorithm = new Subordinates(*tree);
+
+    return new Subordinates(tree);
+}
+
+int main()
+{
+    Subordinates* algorithm = createAlgorithm();
     vector<int> result = algorithm->computeSubordinates();
 
-    for (int i = 0; i < employeeCount; i++) {
-        std::cout << result[i] << ' ';
-    }
+    writeOutputResult(result);
 
     delete algorithm;
-    delete tree;
 
     return 0;
 }

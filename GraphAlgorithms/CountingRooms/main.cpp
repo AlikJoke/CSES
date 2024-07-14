@@ -81,8 +81,16 @@ class CountingRooms {
             return roomsCount;
         }
 
+        ~CountingRooms() {
+            for (auto x : mapNodes) {
+                for (auto y : x) {
+                    delete y;
+                }
+            }
+        }
+
     private:
-        vector<vector<GraphNode*>>& mapNodes;
+        vector<vector<GraphNode*>> mapNodes;
         int firstFloorLevel;
 
         void traverseFloors(GraphNode* nodeToProcessing) {
@@ -131,8 +139,7 @@ class CountingRooms {
         }
 };
 
-int main()
-{
+CountingRooms* createAlgorithm() {
     int heightOfTheMap;
     cin >> heightOfTheMap;
 
@@ -156,16 +163,17 @@ int main()
         }
     }
 
-    CountingRooms algorithm(mapNodes, firstFloorLevel);
-    int roomsCount = algorithm.computeRoomsCount();
+    return new CountingRooms(mapNodes, firstFloorLevel);
+}
+
+int main()
+{
+    CountingRooms* algorithm = createAlgorithm();
+    int roomsCount = algorithm->computeRoomsCount();
 
     cout << roomsCount << endl;
 
-    for (auto x : mapNodes) {
-        for (auto y : x) {
-            delete y;
-        }
-    }
+    delete algorithm;
 
     return 0;
 }
