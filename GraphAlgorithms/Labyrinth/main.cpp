@@ -274,12 +274,12 @@ void writeOutputResult(string shortestPath) {
 
 int main() {
 	
-    Labyrinth* labyrinth = createAlgorithm();
-    string shortestPath = labyrinth->computeShortestPath();
+    Labyrinth* algorithm = createAlgorithm();
+    string shortestPath = algorithm->computeShortestPath();
 
 	writeOutputResult(shortestPath);
 	
-	delete labyrinth;
+	delete algorithm;
 
     return 0;
 }
