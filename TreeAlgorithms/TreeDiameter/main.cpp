@@ -78,8 +78,7 @@ class TreeDiameter {
 };
 
 
-int main()
-{
+int main() {
     int nodesCount;
     cin >> nodesCount;
     

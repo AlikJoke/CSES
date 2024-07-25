@@ -124,8 +124,7 @@ Subordinates* createAlgorithm() {
     return new Subordinates(tree);
 }
 
-int main()
-{
+int main() {
     Subordinates* algorithm = createAlgorithm();
     vector<int> result = algorithm->computeSubordinates();
 

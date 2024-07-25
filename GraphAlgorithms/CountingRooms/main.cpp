@@ -166,8 +166,7 @@ CountingRooms* createAlgorithm() {
     return new CountingRooms(mapNodes, firstFloorLevel);
 }
 
-int main()
-{
+int main() {
     CountingRooms* algorithm = createAlgorithm();
     int roomsCount = algorithm->computeRoomsCount();
 
