@@ -45,7 +45,7 @@ class CityNode {
 
         CityNode(int id) : id(id), visited(false), linkedCities(vector<CityNode*>()), visitedFrom(nullptr) {}
 
-        void addlinkedCity(CityNode* linkedCity) {
+        void addLinkedCity(CityNode* linkedCity) {
             linkedCities.push_back(linkedCity);
         }
 
@@ -178,8 +178,8 @@ RoundTrip* createAlgorithm() {
 			cities[secondCityId - 1] = secondCityNode;
 		}
 		
-		firstCityNode->addlinkedCity(secondCityNode);
-		secondCityNode->addlinkedCity(firstCityNode);
+		firstCityNode->addLinkedCity(secondCityNode);
+		secondCityNode->addLinkedCity(firstCityNode);
     }
 	
     return new RoundTrip(cities);
