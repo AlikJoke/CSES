@@ -2,7 +2,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 /**
- * <a href="https://cses.fi/problemset/task/3112/"><h1>Hidden Integer</h1><br/></a>
+ * <a href="https://cses.fi/problemset/task/3112/"><h1>Hidden Integer</h1><br/></a><br/>
  * There is a hidden integer {@code x}. Task is to find the value of {@code x}.<br/>
  * To do this, you can ask questions: you can choose an integer {@code y} and you will be told if {@code y < x}.<br/><br/>
  *
